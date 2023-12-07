@@ -73,6 +73,12 @@ This file contains:
 > sgen config init
 > ```
 > This operation will perform Gihub authentication and then write the environment variables
+>
+> You can also execute
+> ```bash
+> sgen config set username=your Github username
+> sgen config set email=your email
+> ```
 
 ## Create a project based on a template
 
