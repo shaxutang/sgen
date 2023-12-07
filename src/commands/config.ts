@@ -12,7 +12,6 @@ export type ConfigOptions = {
 
 /**
  * Handles the 'list' action for sgen configuration.
- * @param {boolean} isExists - Indicates whether the .sgenrc file exists.
  * @returns {void} - A promise that resolves after handling the 'list' action.
  */
 function handleList(): void {
@@ -49,7 +48,6 @@ function handleSet(option: string): void {
 
 /**
  * Handles the 'remove' action for sgen configuration.
- * @param {Sgenrc} sgenrc - The current sgen configuration options.
  * @param {string} option - The option string to remove.
  * @returns {void} - A promise that resolves after handling the 'remove' action.
  */
