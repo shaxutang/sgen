@@ -6,8 +6,6 @@ const isTest = process.env.NODE_ENV === "test";
 const isProd = process.env.NODE_ENV === "production";
 
 const propdOptions: Options = {
-  dts: true,
-  sourcemap: true,
   treeshake: true,
   esbuildOptions(options) {
     options.chunkNames = "chunks/[name]";
