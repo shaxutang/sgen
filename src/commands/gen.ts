@@ -3,10 +3,9 @@ import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import chalk from "chalk";
 import ejs from "ejs";
-import { Frontmatter, compileEjsTemplate } from "../core/compile";
+import { Frontmatter, compileEjsTemplate, render } from "../core/compile";
 import { Dir, GENERATOR_SEPERATOR } from "../core/constans";
 import { SgenDir } from "../core/directory";
-import { helper } from "../core/helpers";
 import prompts, { getPromptsVariables, isPrompts } from "../core/prompts";
 import sgenrcEntity from "../core/sgenrc";
 import { isExists } from "../utils/fs";
@@ -139,19 +138,16 @@ export default async function () {
   }
 
   // variables required by the template
-  const variables = await (async (defaultVars) => {
+  const variables = await (async () => {
     const promptsYamlFileName = files.find(isPrompts);
 
     if (promptsYamlFileName) {
       const promptsYamlPath = join(template, promptsYamlFileName);
       const propmtsVaribales = await getPromptsVariables(promptsYamlPath);
-      return {
-        ...defaultVars,
-        ...propmtsVaribales,
-      };
+      return propmtsVaribales;
     }
-    return defaultVars;
-  })({ sgenrc, s: helper });
+    return {};
+  })();
 
   // Process each file in the template
   const processFiles = files
@@ -169,7 +165,7 @@ export default async function () {
 
       const processFiles = spiltRaw
         // ejs render
-        .map((_raw) => compileEjsTemplate(ejs.render(_raw, variables)))
+        .map((_raw) => compileEjsTemplate(render(_raw, variables)))
         // filter out undefine result
         .filter((compile) => !!compile)
         // generate process file

@@ -1,4 +1,14 @@
+import * as changeCase from "change-case";
 import dotenv from "dotenv";
+import ejs from "ejs";
+import sgenrcEntity from "../core/sgenrc";
+
+const sgenrc = sgenrcEntity.getSgenrc();
+
+export const helper = {
+  changeCase,
+  sgenrc,
+};
 
 export type Frontmatter = {
   to: string;
@@ -35,4 +45,9 @@ export function compileEjsTemplate(template: string):
 
   // If the template does not match, return an object with empty frontmatter and content.
   return void 0;
+}
+
+export function render(template: string, variables: Record<string, any>) {
+  const vars = { ...helper, ...variables };
+  return ejs.render(template, vars);
 }

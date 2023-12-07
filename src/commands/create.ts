@@ -1,12 +1,11 @@
 import { statSync } from "node:fs";
 import { readdir, mkdir, constants } from "node:fs/promises";
 import { join, basename } from "node:path";
-import ejs from "ejs";
+import ejs, { render } from "ejs";
 import copy from "recursive-copy";
 import through2 from "through2";
 import { Dir } from "../core/constans";
 import { SgenDir } from "../core/directory";
-import { helper } from "../core/helpers";
 import prompts, {
   Question,
   getPromptsVariables,
@@ -67,13 +66,10 @@ export default async function () {
       const promptsYamlPath = join(template, promptsYamlFileName);
       const propmtsVaribales = await getPromptsVariables(promptsYamlPath);
 
-      return {
-        ...defaultVars,
-        ...propmtsVaribales,
-      };
+      return propmtsVaribales;
     }
-    return defaultVars;
-  })({ sgenrc, s: helper, name });
+    return {};
+  })();
 
   // Define the target directory path for the new project
   const targetDir = join(process.cwd(), variables.name);
@@ -101,7 +97,7 @@ export default async function () {
         done: (arg0: null, arg1: any) => void,
       ) {
         // Use ejs to render the content with specific variables
-        const output = ejs.render(chunk.toString(), {
+        const output = render(chunk.toString(), {
           ...variables,
           name: basename(variables.name),
         });
