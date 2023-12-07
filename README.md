@@ -12,7 +12,7 @@ This project is a tool that generates project templates. It is based on a set of
 npm install -g @vcee/sgen
 ```
 
-## use
+## Usage
 
 ```bash
 $ sgen -h
@@ -52,17 +52,17 @@ This file contains:
 > Because these two variables are used in the template provided by default
 > ```json
 > {
-> ...
-> "homepage": "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
-> "repository": {
-> "type": "git",
-> "url": "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git"
-> },
-> "bugs": {
-> "url": "https://github.com/<%= sgenrc.username %>/<%= name %>/issues"
-> },
-> "author": "<%= sgenrc.username %> <<%= sgenrc.email%>>",
-> ...
+>   ...
+>   "homepage": "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
+>   "repository": {
+>   "type": "git",
+>     "url": "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git"
+>   },
+>   "bugs": {
+>     "url": "https://github.com/<%= sgenrc.username %>/<%= name %>/issues"
+>   },
+>   "author": "<%= sgenrc.username %> <<%= sgenrc.email%>>",
+>   ...
 > }
 > ```
 > If not provided, an error will occur when creating, please be careful! ! !
