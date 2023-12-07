@@ -43,7 +43,7 @@ This file contains:
 - .sgenrc: Configuration file, the configuration in this request will overwrite the configuration of `~/user/.sgenrc`.
 
 ## Please pay special attention
-> [!CAUTION]
+> [!WARNING]
 > If you use the default template, then you need to set the environment variables `username` and `password` in `~/user/.sgenrc` or `{cwd}/.sgen/.sgenrc` first
 > ```txt
 > username=your Gihub username
@@ -65,7 +65,7 @@ This file contains:
 >   ...
 > }
 > ```
-> If not provided, an error will occur when creating, please be careful! ! !
+> If not provided, an warn will occur when creating, please be careful
 
 ## Create a project based on a template
 
