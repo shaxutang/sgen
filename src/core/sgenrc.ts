@@ -62,6 +62,31 @@ class SgenrcEntity {
   // }
 
   /**
+   * Set the value of a specified field in osSgenrc.
+   *
+   * @param name - The name of the field to be set.
+   * @param value - The value to set for the field.
+   */
+  setFieldToOsSgenrc(name: string, value: any) {
+    const osSgenrc = this.getOsSgenrc();
+    this.writeOsSgenrc({
+      ...osSgenrc,
+      [name]: value,
+    });
+  }
+
+  /**
+   * Remove a specified field from osSgenrc.
+   *
+   * @param name - The name of the field to be removed.
+   */
+  removeFieldFromOsSgenrc(name: string) {
+    const osSgenrc = this.getOsSgenrc();
+    if (osSgenrc[name]) delete osSgenrc[name];
+    this.writeOsSgenrc(osSgenrc);
+  }
+
+  /**
    * Formats the sgenrc object into a string representation with key-value pairs separated by equals sign and multiple entries separated by new lines.
    * @param sgenrc - The sgenrc object to be formatted
    * @returns The formatted string representation of the sgenrc object
