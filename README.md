@@ -190,6 +190,7 @@ type SgenrcOptions = {
   // Email [optional] will be used in the initialized template, if you create a default template it is [required]
   email?: string;
   url?: string;
+  // Local workspace [optional], when you specify the directory, `sgen` will look for the `creator`/`generator` directory in the directory
   workspace?: string;
   [prop: string]: any;
 };

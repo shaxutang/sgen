@@ -190,6 +190,7 @@ type SgenrcOptions = {
   // 邮箱 [可选] 在初始化的模板中会使用到，如果你创建预设的模板则为[必填]
   email?: string;
   url?: string;
+  // 本地工作空间 [可选]，当你指定目录后，`sgen`会在目录下寻找`creator`/`generator`目录
   workspace?: string;
   [prop: string]: any;
 };
