@@ -192,6 +192,9 @@ export default async function () {
     const { frontmatter, cate } = processFile;
     try {
       if (!frontmatter?.to) {
+        warn(
+          `Please make sure you set "to" in ${processFile.templateFileName}`,
+        );
         continue;
       }
 
@@ -204,14 +207,9 @@ export default async function () {
       }
 
       // Handle 'add' category
-      if (cate === "add") {
-        await handleAdd(processFile);
-      }
-
+      cate === "add" && (await handleAdd(processFile));
       // Handle 'append' category
-      if (cate === "append") {
-        await handleAppend(processFile);
-      }
+      cate === "append" && (await handleAppend(processFile));
     } catch (err) {
       error(err);
     }
