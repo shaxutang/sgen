@@ -65,7 +65,14 @@ This file contains:
 >   ...
 > }
 > ```
-> If not provided, an warn will occur when creating, please be careful
+> If not provided, a warning will be issued when creating
+>
+> You can execute
+> 
+> ```bash
+> sgen config init
+> ```
+> This operation will perform Gihub authentication and then write the environment variables
 
 ## Create a project based on a template
 
