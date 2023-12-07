@@ -91,7 +91,7 @@ export default async function () {
   // Copy files from the source directory to the target directory
   await copy(template, targetDir, {
     dot: true,
-    filter: /^(?!.*(?:node_modules|prompts\.ya?ml)).*$/,
+    filter: createRegexForExcludedPaths(["node_modules"]),
     transform(src) {
       return through2(function (
         chunk: Buffer,
@@ -99,7 +99,7 @@ export default async function () {
         done: (arg0: null, arg1: any) => void,
       ) {
         // ignore .sgen dir
-        if (src.includes(join(template, ".sgen"))) {
+        if (!createRegexForExcludedPaths([join(template, ".sgen")]).test(src)) {
           done(null, chunk);
           return;
         }
@@ -119,4 +119,16 @@ export default async function () {
       `\`code ${variables.name}\` to open it in Vscode!`,
     ].join("\n"),
   );
+}
+
+function createRegexForExcludedPaths(paths: string[]) {
+  const escapedPaths = paths.map((path) =>
+    path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+  );
+
+  const regexString = `^(?!${escapedPaths.join("|")}).*`;
+
+  const regex = new RegExp(regexString, "i");
+
+  return regex;
 }
