@@ -42,6 +42,31 @@ This file contains:
 - generator: The directory where customized code templates are stored. Some commonly used templates are provided by default.
 - .sgenrc: Configuration file, the configuration in this request will overwrite the configuration of `~/user/.sgenrc`.
 
+## Please pay special attention
+> [!CAUTION]
+> If you use the default template, then you need to set the environment variables `username` and `password` in `~/user/.sgenrc` or `{cwd}/.sgen/.sgenrc` first
+> ```txt
+> username=your Gihub username
+> email=your email
+> ```
+> Because these two variables are used in the template provided by default
+> ```json
+> {
+> ...
+> "homepage": "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
+> "repository": {
+> "type": "git",
+> "url": "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git"
+> },
+> "bugs": {
+> "url": "https://github.com/<%= sgenrc.username %>/<%= name %>/issues"
+> },
+> "author": "<%= sgenrc.username %> <<%= sgenrc.email%>>",
+> ...
+> }
+> ```
+> If not provided, an error will occur when creating, please be careful! ! !
+
 ## Create a project based on a template
 
 You only need to execute the `sgen create` command in the terminal, and then select a template according to the prompts.
