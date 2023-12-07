@@ -6,7 +6,7 @@ import { success, warn } from "../utils/log";
  * Configuration options for the sgen command.
  */
 export type ConfigOptions = {
-  action: "list" | "set" | "remove";
+  action: "list" | "set" | "remove" | "init";
   option: `${keyof Sgenrc & string}=${string}`;
 };
 
@@ -56,6 +56,10 @@ function handleRemove(option: string): void {
   success(`removed ${option} success`);
 }
 
+function handleInit() {
+  sgenrcEntity.saveSgenrcFromGithub();
+}
+
 /**
  * Main function for handling sgen configuration based on the provided action and option.
  * @param {SgenContext<ConfigOptions>} context - The context object containing configuration options.
@@ -67,4 +71,5 @@ export default function (options: ConfigOptions): void {
   action === "list" && handleList();
   action === "set" && handleSet(option);
   action === "remove" && handleRemove(option);
+  action === "init" && handleInit();
 }
