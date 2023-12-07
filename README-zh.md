@@ -16,42 +16,55 @@ npm install -g @vcee/sgen
 
 ```bash
 $ sgen -h
-Usage: sgen [options] [command] [template]
-
-Arguments:
-  template                  directory name under the .sgen directory
+Usage: sgen [options] [command]
 
 Options:
   -V, --version             output the version number
   -h, --help                display help for command
 
 Commands:
-  create [template] [name]  select a template to create a new project
+  create                    select a template to create a new project
   init                      init a .sgen dir
   config <action> [option]  change ~/user/.sgenrc
 ```
 
-## 根据模板创建项目
+## 初始化
 
 ```bash
-sgen create [模板名称] [项目名
+sgen init
 ```
 
-### options:
+该命令会在当前目录下创建一个`.sgen`文件夹。
 
-- `name`：项目名称，可选，默认使用当前目录名
+该文件下包含:
 
-- `template`：指定模板，可选，预置的目录名称/`.sgen/creator`下的目录名称/或指定的本地目录下的目录名称(.sgenrc)
+- creator：自定义的项目模板存放目录，默认提供了一些常用的模板
+- generator: 自定义的代码模板存放的目录，默认提供了一些常用的模板
+- .sgenrc：配置文件，该问价中的配置会覆盖`~/user/.sgenrc`的配置。
+
+## 根据模板创建项目
+
+你只需要在终端中执行`sgen create`指令，然后根据提示选择模板即可。
+
+```bash
+$ sgen create
+? Please select a template. » - Use arrow-keys. Return to submit.
+>   ✨ .sgen/tsup
+    ✨ .sgen/tsup-react
+    ✨ .sgen/vite-lib
+    ✨ .sgen/vite-vue-ui
+```
 
 ## 根据模板生成代码
 
+你需要先在`.sgen/generator`目录下编写模板代码，然后执行`sgen`，然后根据提示选择模板即可。
+
 ```bash
-sgen [模板名称]
+$ sgen
+? Please select a template to generate » - Use arrow-keys. Return to submit.
+>   ✨ .sgen/tsup-react
+    ✨ .sgen/vite-vue-ui
 ```
-
-### arguments:
-
-- 模板名称：可选，预置的目录名称/`.sgen/generator`下的目录名称/或指定的本地目录下的目录名称(.sgenrc)
 
 ### 模板编写规则
 
@@ -62,8 +75,10 @@ sgen [模板名称]
 - s：辅助函数，包括字符串驼峰转换 `s.changeCase.pascalCase(name)`，参考：[change-case](https://github.com/blakeembrey/change-case)
 - sgenrc：配置内容
 
-> [name].append.t：该文件为追加模式，在已有文件基础上追加内容，若没有则新建指定文件
-> 例如：
+### [name].append.t：
+
+该文件为追加模式，在已有文件基础上追加内容，若没有则新建指定文件
+例如：
 
 ```txt
 ---
@@ -84,7 +99,9 @@ export { default as <%= s.changeCase.pascalCase(name) %> } from "./components/<%
 
 在代码生成时会自动在该文本后面进行追加
 
-> [name].add.t：该文件为新增模式，直接根据模板内容进行新增
+### [name].add.t
+
+该文件为新增模式，直接根据模板内容进行新增
 
 ```txt
 ---
@@ -102,12 +119,48 @@ export default function <%= s.changeCase.pascalCase(name) %>({ children, classNa
 }
 ```
 
-> prompts.yml：该文件指定需要填写的字段，在执行 `sgen` 时，会提示用户输入这些字段，并将输入的值保存到模板预置的变量中
+### 支持统一个文件编写多个模板
+
+只需要在模板文件中添加分隔符`<!-- sgen seperator -->`即可。
+
+```txt
+---
+to: background/components/<%= name %>/<%= name %>.tsx
+---
+import clsx from "clsx";
+import { <%= s.changeCase.pascalCase(name) %>Props } from "./type";
+
+export default function <%= s.changeCase.pascalCase(name) %>({ children, className, ...rest }: <%= s.changeCase.pascalCase(name) %>Props) {
+  return (
+    <div className={clsx("<%= classNamePrefix %>-<%= name %>", className)} {...rest}>
+      {children}
+    </div>
+  );
+}
+
+
+<!-- sgen seperator -->
+
+---
+to: background/components/<%= name %>/<%= name %>.tsx
+---
+其他代码。。。。
+
+```
+
+### prompts.yml 或 prompts.yaml
+
+该文件指定需要填写的字段，在执行 `sgen` 时，会提示用户输入这些字段，并将输入的值保存到模板预置的变量中
+
+详细配置参考：https://github.com/terkelg/prompts#readme
 
 ```yml
 name:
-  message: "你的组件名称是什么？"
+  type: "text"
+  message: "你的组件类名前缀是什么？"
+  initial: "my-component"
 classNamePrefix:
+  type: "text"
   message: "你的组件样式类名前缀是什么？"
 ```
 
@@ -118,23 +171,11 @@ classNamePrefix:
 button
 ? 你的组件样式类名前缀是什么？
 sgen
+
+# 最终你会得到 {name:"button",classNamePrefix:"sgen"}
 ```
 
 输入的值最终会在解析模板时进行渲染，你可以在定义模板时使用`<%= name %>` 来获取
-
-## 初始化
-
-```bash
-sgen init
-```
-
-该命令会在当前目录下创建一个`.sgen`文件夹。
-
-该文件下包含:
-
-- creator：自定义的项目模板存放目录
-- generator: 自定义的代码模板存放的目录
-- .sgenrc：配置文件，该问价中的配置会覆盖`~/user/.sgenrc`的配置。
 
 ## .sgenrc
 
@@ -142,11 +183,14 @@ sgen init
 
 ```typescript
 type SgenrcOptions = {
-  avatar: string;
-  username: string;
-  email: string;
-  url: string;
-  workspace: string;
+  // 头像 [可选项]
+  avatar?: string;
+  // Gihub用户名 [可选] 在初始化的模板中会使用到，如果你创建预设的模板则为[必填]
+  username?: string;
+  // 邮箱 [可选] 在初始化的模板中会使用到，如果你创建预设的模板则为[必填]
+  email?: string;
+  url?: string;
+  workspace?: string;
   [prop: string]: any;
 };
 ```
@@ -156,7 +200,10 @@ type SgenrcOptions = {
 ## 环境变量相关命令
 
 ```bash
+# 显示所有环境变量
 sgen config list
+# 设置环境变量
 sgen config set <key>=<value>
+# 删除环境变量
 sgen config remove <key>
 ```
