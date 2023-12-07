@@ -8,7 +8,7 @@ import { error, success } from "../utils/log";
 
 export default async function () {
   if (await isExists(join(process.cwd(), Dir.SGEN))) {
-    error(`dir \`${Dir.SGEN}\` already exists.`);
+    error(`\`${Dir.SGEN}\` already exists.`);
     process.exit(1);
   }
 
@@ -45,7 +45,7 @@ export default async function () {
       "init success.",
       `- ${Dir.CREATOR}: all project of this dir will display when exec \`sgen create\``,
       `- ${Dir.GENERATOR}: Generate according to the directory under templates`,
-      `- .sgenrc: config file`,
+      `- .sgenrc: env variables file`,
     ].join("\n"),
   );
 }

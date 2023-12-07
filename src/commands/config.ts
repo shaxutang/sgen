@@ -1,6 +1,5 @@
 import { Sgenrc } from "@vcee/sgen-types";
 import sgenrcEntity from "../core/sgenrc";
-import { SgenContext } from "../type";
 import { success, warn } from "../utils/log";
 
 /**
@@ -65,18 +64,12 @@ function handleRemove(sgenrc: Sgenrc, option: string): void {
  * @param {SgenContext<ConfigOptions>} context - The context object containing configuration options.
  * @returns {void} - A promise that resolves after handling the sgen configuration.
  */
-export default function (context: SgenContext<ConfigOptions>): void {
-  const {
-    options: { action, option },
-  } = context;
-
+export default function (options: ConfigOptions): void {
+  const { action, option } = options;
   const isExists = sgenrcEntity.osSgenrcExits();
-
   const sgenrc = sgenrcEntity.getOsSgenrc();
 
   action === "list" && handleList(isExists);
-
   action === "set" && handleSet(sgenrc, option);
-
   action === "remove" && handleRemove(sgenrc, option);
 }

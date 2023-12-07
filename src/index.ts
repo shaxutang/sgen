@@ -24,22 +24,9 @@ program
   .description("change ~/user/.sgenrc")
   .action((action, option) => {
     config({
-      options: {
-        action,
-        option,
-      },
+      action,
+      option,
     });
   });
 
 program.parse();
-
-let ctrlCPressed = false;
-
-process.on("SIGINT", () => {
-  if (!ctrlCPressed) {
-    console.log("\n按下Ctrl+C再次退出");
-    ctrlCPressed = true;
-  } else {
-    process.exit();
-  }
-});

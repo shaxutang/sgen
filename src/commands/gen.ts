@@ -114,7 +114,7 @@ export default async function () {
   // If no templates are available, show a warning and exit
   if (!allDirs.length) {
     warn(
-      "There is no template to choose from. \n\nPlease create a template in the .sgen/templates directory.",
+      `There is no template to choose from. \n\nPlease create a template in the .sgen/${Dir.GENERATOR} directory.`,
     );
     process.exit(1);
   }

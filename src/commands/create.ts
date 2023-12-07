@@ -11,7 +11,6 @@ import prompts, {
   getPromptsVariables,
   isPrompts,
 } from "../core/prompts";
-import sgenrcEntity from "../core/sgenrc";
 import { isExists } from "../utils/fs";
 import { success, error, warn } from "../utils/log";
 
@@ -19,14 +18,14 @@ import { success, error, warn } from "../utils/log";
  * Create a new project based on user input and options.
  */
 export default async function () {
-  const sgenrc = sgenrcEntity.getOsSgenrc();
-
   const sgenDir = new SgenDir(Dir.CREATOR);
 
   const allDirs = sgenDir.getAllDirs();
 
   if (!allDirs.length) {
-    warn("template dir is empty.");
+    warn(
+      `There is no template to choose from. \n\nPlease create a template in the .sgen/${Dir.CREATOR} directory.`,
+    );
     process.exit(1);
   }
 
@@ -59,17 +58,20 @@ export default async function () {
   );
 
   // variables required by the template
-  const variables = await (async (defaultVars) => {
+  const variables = await (async (defaultVariables) => {
     const promptsYamlFileName = sourceDirFiles.find(isPrompts);
 
     if (promptsYamlFileName) {
       const promptsYamlPath = join(template, promptsYamlFileName);
       const propmtsVaribales = await getPromptsVariables(promptsYamlPath);
 
-      return propmtsVaribales;
+      return {
+        ...defaultVariables,
+        ...propmtsVaribales,
+      };
     }
-    return {};
-  })();
+    return defaultVariables;
+  })({ name });
 
   // Define the target directory path for the new project
   const targetDir = join(process.cwd(), variables.name);
@@ -82,7 +84,7 @@ export default async function () {
   // Check if the target directory is not empty
   const files = await readdir(targetDir);
   if (files.length > 0) {
-    error(`Dir \`${targetDir}\` is not empty.`);
+    error(`\`${targetDir}\` is not empty.`);
     process.exit(1);
   }
 
