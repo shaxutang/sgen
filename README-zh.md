@@ -43,7 +43,7 @@ sgen init
 - .sgenrc：配置文件，该问价中的配置会覆盖`~/user/.sgenrc`的配置。
 
 ## 请特别注意
-> [!CAUTION]
+> [!WARNING]
 > 如果你使用默认的模板，那么你需要先在`~/user/.sgenrc`或者`{cwd}/.sgen/.sgenrc`设置环境变量`username`和`password`
 > ```txt
 > username=你的Gihub用户名
@@ -65,7 +65,7 @@ sgen init
 >   ...
 > }
 > ```
-> 如果不提供会在创建时报错，请务必注意！！！
+> 如果不提供会在创建时会发出警告，请务必注意
    
 
 ## 根据模板创建项目
