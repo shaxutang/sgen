@@ -5,8 +5,10 @@ import sgenrcEntity from "../core/sgenrc";
 
 const sgenrc = sgenrcEntity.getSgenrc();
 
-export const helper = {
-  changeCase,
+export const defaultVariables = {
+  s: {
+    changeCase,
+  },
   sgenrc,
 };
 
@@ -48,6 +50,6 @@ export function compileEjsTemplate(template: string):
 }
 
 export function render(template: string, variables: Record<string, any>) {
-  const vars = { ...helper, ...variables };
+  const vars = { ...defaultVariables, ...variables };
   return ejs.render(template, vars);
 }

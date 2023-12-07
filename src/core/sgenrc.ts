@@ -4,9 +4,9 @@ import os from "node:os";
 import { join } from "node:path";
 import dotenv from "dotenv";
 import { Sgenrc, MergeSgenrc } from "@vcee/sgen-types";
-import server from "../server/github";
+// import server from "../server/github";
 import { isExistsSync } from "../utils/fs";
-import { error, success } from "../utils/log";
+// import { error, success } from "../utils/log";
 import { Dir } from "./constans";
 
 /**
@@ -20,46 +20,46 @@ class SgenrcEntity {
   // Path to the sgenrc file in the current directory
   private cwdSgenrcPath: string = join(process.cwd(), Dir.SGEN, this.fileName);
 
-  /**
-   * Saves the sgenrc information from GitHub and overrides the existing operating system sgenrc file.
-   */
-  async saveSgenrcFromGithub() {
-    try {
-      success("Please complete the certification first.");
+  // /**
+  //  * Saves the sgenrc information from GitHub and overrides the existing operating system sgenrc file.
+  //  */
+  // async saveSgenrcFromGithub() {
+  //   try {
+  //     success("Please complete the certification first.");
 
-      // Start the server and call getUserCallback() method to get the GitHub user information
-      const githubUser = await server.start().getUserCallback();
+  //     // Start the server and call getUserCallback() method to get the GitHub user information
+  //     const githubUser = await server.start().getUserCallback();
 
-      success("Certification completed.");
+  //     success("Certification completed.");
 
-      // Use GitHub user information or the contents of the operating system sgenrc file for sgenrc
-      const sgenrc = this.osSgenrcExits()
-        ? githubUser
-        : {
-            ...this.getOsSgenrc(),
-            ...githubUser,
-          };
+  //     // Use GitHub user information or the contents of the operating system sgenrc file for sgenrc
+  //     const sgenrc = this.osSgenrcExits()
+  //       ? githubUser
+  //       : {
+  //           ...this.getOsSgenrc(),
+  //           ...githubUser,
+  //         };
 
-      this.writeOsSgenrc(sgenrc);
+  //     this.writeOsSgenrc(sgenrc);
 
-      success(
-        [
-          this.osSgenrcPath,
-          "\n",
-          this.formatSgenrc(sgenrc),
-          "\n",
-          "saved.",
-        ].join("\n"),
-      );
-    } catch {
-      error(
-        'Error connecting to GitHub, you can exec "sgen config set <key>=<value> to set the env variables.',
-      );
-    } finally {
-      // Close the server connection
-      server.close();
-    }
-  }
+  //     success(
+  //       [
+  //         this.osSgenrcPath,
+  //         "\n",
+  //         this.formatSgenrc(sgenrc),
+  //         "\n",
+  //         "saved.",
+  //       ].join("\n"),
+  //     );
+  //   } catch {
+  //     error(
+  //       'Error connecting to GitHub, you can exec "sgen config set <key>=<value> to set the env variables.',
+  //     );
+  //   } finally {
+  //     // Close the server connection
+  //     server.close();
+  //   }
+  // }
 
   /**
    * Formats the sgenrc object into a string representation with key-value pairs separated by equals sign and multiple entries separated by new lines.

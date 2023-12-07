@@ -6,3 +6,9 @@ export type Sgenrc = Partial<{
   workspace: string;
   [prop: string]: any;
 }>;
+
+export type MergeSgenrc = {
+  os: Sgenrc;
+  cwd: Sgenrc;
+  merge: Sgenrc;
+};
