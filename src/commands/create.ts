@@ -1,9 +1,9 @@
 import { statSync } from "node:fs";
 import { readdir, mkdir, constants } from "node:fs/promises";
 import { join, basename } from "node:path";
-import ejs, { render } from "ejs";
 import copy from "recursive-copy";
 import through2 from "through2";
+import { render } from "../core/compile";
 import { Dir } from "../core/constans";
 import { SgenDir } from "../core/directory";
 import prompts, {

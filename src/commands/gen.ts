@@ -2,7 +2,6 @@ import { readFileSync, statSync } from "node:fs";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import chalk from "chalk";
-import ejs from "ejs";
 import { Frontmatter, compileEjsTemplate, render } from "../core/compile";
 import { Dir, GENERATOR_SEPERATOR } from "../core/constans";
 import { SgenDir } from "../core/directory";
