@@ -92,12 +92,17 @@ export default async function () {
   await copy(template, targetDir, {
     dot: true,
     filter: /^(?!.*(?:node_modules|prompts\.ya?ml)).*$/,
-    transform() {
+    transform(src) {
       return through2(function (
         chunk: Buffer,
         _enc: any,
         done: (arg0: null, arg1: any) => void,
       ) {
+        // ignore .sgen dir
+        if (src.includes(join(template, ".sgen"))) {
+          done(null, chunk);
+          return;
+        }
         // Use ejs to render the content with specific variables
         const output = render(chunk.toString(), {
           ...variables,
