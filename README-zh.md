@@ -72,6 +72,12 @@ sgen init
 > sgen config init
 > ```
 > 该操作会进行Gihub认证然后写入环境变量
+> 
+> 也可以执行
+> ```bash
+> sgen config set username=你的Github用户名
+> sgen config set email=你的邮箱
+> ```
    
 
 ## 根据模板创建项目
