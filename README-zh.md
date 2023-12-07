@@ -42,6 +42,32 @@ sgen init
 - generator: 自定义的代码模板存放的目录，默认提供了一些常用的模板
 - .sgenrc：配置文件，该问价中的配置会覆盖`~/user/.sgenrc`的配置。
 
+## 请特别注意
+> [!CAUTION]
+> 如果你使用默认的模板，那么你需要先在`~/user/.sgenrc`或者`{cwd}/.sgen/.sgenrc`设置环境变量`username`和`password`
+> ```txt
+> username=你的Gihub用户名
+> email=你的邮箱
+> ```
+> 因为默认提供的模板中会使用到这两个变量
+> ```json
+> {
+>   ...
+>   "homepage": "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
+>   "repository": {
+>     "type": "git",
+>     "url": "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git"
+>   },
+>   "bugs": {
+>     "url": "https://github.com/<%= sgenrc.username %>/<%= name %>/issues"
+>   },
+>   "author": "<%= sgenrc.username %> <<%= sgenrc.email%>>",
+>   ...
+> }
+> ```
+> 如果不提供会在创建时报错，请务必注意！！！
+   
+
 ## 根据模板创建项目
 
 你只需要在终端中执行`sgen create`指令，然后根据提示选择模板即可。
