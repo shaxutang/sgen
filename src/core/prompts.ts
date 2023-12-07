@@ -1,7 +1,6 @@
 import { readFile } from "fs/promises";
 import yaml from "js-yaml";
 import prompts from "prompts";
-import { isAsyncFunc } from "../utils/async";
 import { error } from "../utils/log";
 
 export const matchPromtsFileRegExp = /prompts.(yml|yaml)$/;
@@ -37,20 +36,22 @@ export async function getPromptsVariables(
         ...value,
       }) as prompts.PromptObject,
   );
-  const val = await prompts(promptTemplates);
-  console.log({ val });
-  return val;
+
+  return await defaultPrompts(promptTemplates);
 }
 
-export default async function <T extends string = string>(
+export default async function defaultPrompts<T extends string = string>(
   questions: prompts.PromptObject<T> | Array<prompts.PromptObject<T>>,
   options?: prompts.Options,
 ) {
   return prompts(questions, {
     onCancel() {
-      error("process canceled.");
-      process.exit(0);
+      process.exit(1);
     },
     ...options,
   });
 }
+
+export type Question<T extends string = string> =
+  | prompts.PromptObject<T>
+  | Array<prompts.PromptObject<T>>;

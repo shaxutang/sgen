@@ -7,24 +7,19 @@ import through2 from "through2";
 import { Dir } from "../core/constans";
 import { SgenDir } from "../core/directory";
 import { helper } from "../core/helpers";
-import prompts, { getPromptsVariables, isPrompts } from "../core/prompts";
+import prompts, {
+  Question,
+  getPromptsVariables,
+  isPrompts,
+} from "../core/prompts";
 import sgenrcEntity from "../core/sgenrc";
-import { SgenContext } from "../type";
 import { isExists } from "../utils/fs";
 import { success, error, warn } from "../utils/log";
 
-export type CreateOptions = {
-  name: string;
-  template: string;
-};
-
 /**
  * Create a new project based on user input and options.
- * @param {SgenContext<Partial<CreateOptions>>} context - Sgen context containing options.
  */
-export default async function (context: SgenContext<Partial<CreateOptions>>) {
-  const { options } = context;
-
+export default async function () {
   const sgenrc = sgenrcEntity.getOsSgenrc();
 
   const sgenDir = new SgenDir(Dir.CREATOR);
@@ -36,54 +31,32 @@ export default async function (context: SgenContext<Partial<CreateOptions>>) {
     process.exit(1);
   }
 
-  /**
-   * Prompt the user to select a project template directory.
-   * @returns {Promise<string>} - Promise resolving to the selected directory path.
-   */
-  async function selectDirPrompt(): Promise<string> {
-    return (
-      await prompts({
-        name: "template",
-        type: "select",
-        message: "Please select a template.",
-        choices: sgenDir.getAllDirChoices(),
-      })
-    ).template;
-  }
+  const questions: Question = [
+    {
+      type: "select",
+      name: "template",
+      message: "Please select a template.",
+      choices: sgenDir.getAllDirChoices(),
+      validate(value: string) {
+        return !!value;
+      },
+    },
+    {
+      type: "text",
+      name: "name",
+      message: "Please enter a name for your project.",
+      initial: "my-project",
+      validate(value: string) {
+        return !!value;
+      },
+    },
+  ];
 
-  // If the template option is provided, use it; otherwise, prompt the user
-  const sourceDir = await (async () => {
-    let dir = options?.template
-      ? // If all available directories contain the same name, use the one with higher priority.
-        allDirs.find((dir) => dir.name === options.template)?.value!
-      : await selectDirPrompt();
-
-    // Check if the selected template directory exists
-    if (!(await isExists(dir))) {
-      warn("The template is not found, please select an existing template.");
-      dir = await selectDirPrompt();
-    }
-    return dir;
-  })();
-
-  // Get the project name or directory from options or user input
-  const projectNameOrDir: string =
-    options?.name ||
-    (
-      await prompts({
-        type: "text",
-        name: "name",
-        message: "Please enter a name for your project.",
-        initial: basename(sourceDir),
-        validate(value: string) {
-          return !!value;
-        },
-      })
-    ).name;
+  const { template, name } = await prompts(questions);
 
   // Get a list of files in the selected template directory
-  const sourceDirFiles = (await readdir(sourceDir)).filter((item) =>
-    statSync(join(sourceDir, item)).isFile(),
+  const sourceDirFiles = (await readdir(template)).filter((item) =>
+    statSync(join(template, item)).isFile(),
   );
 
   // variables required by the template
@@ -91,7 +64,7 @@ export default async function (context: SgenContext<Partial<CreateOptions>>) {
     const promptsYamlFileName = sourceDirFiles.find(isPrompts);
 
     if (promptsYamlFileName) {
-      const promptsYamlPath = join(sourceDir, promptsYamlFileName);
+      const promptsYamlPath = join(template, promptsYamlFileName);
       const propmtsVaribales = await getPromptsVariables(promptsYamlPath);
 
       return {
@@ -100,7 +73,7 @@ export default async function (context: SgenContext<Partial<CreateOptions>>) {
       };
     }
     return defaultVars;
-  })({ sgenrc, s: helper, name: projectNameOrDir });
+  })({ sgenrc, s: helper, name });
 
   // Define the target directory path for the new project
   const targetDir = join(process.cwd(), variables.name);
@@ -118,7 +91,7 @@ export default async function (context: SgenContext<Partial<CreateOptions>>) {
   }
 
   // Copy files from the source directory to the target directory
-  await copy(sourceDir, targetDir, {
+  await copy(template, targetDir, {
     dot: true,
     filter: /^(?!.*(?:node_modules|prompts\.ya?ml)).*$/,
     transform() {

@@ -2,36 +2,22 @@ import { program } from "commander";
 import { version } from "../package.json";
 import config from "./commands/config";
 import create from "./commands/create";
-import gen, { GenOptions } from "./commands/gen";
+import gen from "./commands/gen";
 import init from "./commands/init";
-
-// import ui from "./commands/ui";
 
 program.name("sgen").version(version);
 
 program
-  .command("create [template] [name]")
+  .command("create")
   .description("select a template to create a new project")
-  .action((template, name) => {
-    try {
-      create({ options: { name, template } });
-    } catch {}
-  });
+  .action(() => create());
 
 program
   .command("init")
   .description("init a .sgen dir")
   .action(() => init());
 
-program
-  .argument("[template]", "directory name under the .sgen directory")
-  .action((template: GenOptions["template"]) =>
-    gen({
-      options: {
-        template,
-      },
-    }),
-  );
+program.action(() => gen());
 
 program
   .command("config <action> [option]")
@@ -44,11 +30,6 @@ program
       },
     });
   });
-
-// program
-//   .command("ui")
-//   .description("start ui")
-//   .action(() => ui());
 
 program.parse();
 

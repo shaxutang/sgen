@@ -9,13 +9,8 @@ import { SgenDir } from "../core/directory";
 import { helper } from "../core/helpers";
 import prompts, { getPromptsVariables, isPrompts } from "../core/prompts";
 import sgenrcEntity from "../core/sgenrc";
-import { SgenContext } from "../type";
 import { isExists } from "../utils/fs";
 import { error, success, warn } from "../utils/log";
-
-export type GenOptions = {
-  template: string;
-};
 
 export type FileCate = "add" | "append";
 
@@ -107,11 +102,8 @@ async function handleAppend({
 
 /**
  * Generate files based on the specified template and name.
- *
- * @param {GenOptions} [template] - Options for code generation.
  */
-export default async function ({ options }: SgenContext<GenOptions>) {
-  const { template } = options;
+export default async function () {
   // Get the configuration from .sgenrc file
   const sgenrc = sgenrcEntity.getSgenrc();
 
@@ -128,37 +120,17 @@ export default async function ({ options }: SgenContext<GenOptions>) {
     process.exit(1);
   }
 
-  const templateDir = await (async () => {
-    async function doSelect() {
-      return (
-        await prompts({
-          type: "select",
-          name: "template",
-          message: "Please select a template to generate",
-          choices: sgenDir.getAllDirChoices(),
-        })
-      ).template;
-    }
-
-    // If no template is specified, prompt the user to select one
-    if (!template) {
-      // Prompt the user to select a template
-      return await doSelect();
-    } else {
-      // Use the specified template
-      const findTemplate = allDirs.find((item) => item?.name === template)
-        ?.value!;
-
-      // select if template dir not exits.
-      return findTemplate ?? (await doSelect());
-    }
-  })();
+  const { template } = await prompts({
+    type: "select",
+    name: "template",
+    message: "Please select a template to generate",
+    choices: sgenDir.getAllDirChoices(),
+  });
 
   // Get a list of files in the selected template directory
-  const files = (await readdir(templateDir)).filter(
+  const files = (await readdir(template)).filter(
     (item) =>
-      statSync(join(templateDir, item)).isFile() &&
-      templateFileRegex.test(item),
+      statSync(join(template, item)).isFile() && templateFileRegex.test(item),
   );
 
   if (!files.length) {
@@ -171,7 +143,7 @@ export default async function ({ options }: SgenContext<GenOptions>) {
     const promptsYamlFileName = files.find(isPrompts);
 
     if (promptsYamlFileName) {
-      const promptsYamlPath = join(templateDir, promptsYamlFileName);
+      const promptsYamlPath = join(template, promptsYamlFileName);
       const propmtsVaribales = await getPromptsVariables(promptsYamlPath);
       return {
         ...defaultVars,
@@ -188,7 +160,7 @@ export default async function ({ options }: SgenContext<GenOptions>) {
     .map((file) => {
       const split = file.split(".");
       const cate: FileCate = split[split.length - 2] as FileCate;
-      const path = join(templateDir, file);
+      const path = join(template, file);
 
       // Read the raw content of the file
       const raw = readFileSync(path, "utf-8");
