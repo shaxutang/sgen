@@ -30,9 +30,9 @@ test("render template", () => {
 
     export default function Button({ children, className, ...rest }: ButtonProps) {
       return (
-        <button className={clsx(\\"t-button\\", className)} {...rest}>
+        <div className={clsx(\\"t-button\\", className)} {...rest}>
           {children}
-        </button>
+        </div>
       );
     }
 
@@ -60,9 +60,9 @@ test("render seperator template", () => {
 
     export default function Button({ children, className, ...rest }: ButtonProps) {
       return (
-        <button className={clsx(\\"t-button\\", className)} {...rest}>
+        <div className={clsx(\\"t-button\\", className)} {...rest}>
           {children}
-        </button>
+        </div>
       );
     }
 
@@ -78,4 +78,10 @@ test("render seperator template", () => {
     ",
     ]
   `);
+});
+
+test("when the variable does not exist", () => {
+  expect(
+    render("tramsform result: <%= s.changeCase.camelCase(name) %>", {}),
+  ).toMatchInlineSnapshot('"tramsform result: <%= s.changeCase.camelCase(name) %>"');
 });
