@@ -2,6 +2,7 @@ import * as changeCase from "change-case";
 import dotenv from "dotenv";
 import ejs from "ejs";
 import sgenrcEntity from "../core/sgenrc";
+import { warn } from "../utils/log";
 
 const sgenrc = sgenrcEntity.getSgenrc();
 
@@ -51,5 +52,11 @@ export function compileEjsTemplate(template: string):
 
 export function render(template: string, variables: Record<string, any>) {
   const vars = { ...defaultVariables, ...variables };
-  return ejs.render(template, vars);
+
+  try {
+    return ejs.render(template, vars);
+  } catch (err) {
+    warn(`${(err as Error).message}\n\nThe file will not be rendered`);
+    return template;
+  }
 }
