@@ -1,0 +1,4 @@
+name:
+  message: "What is your component name?"
+classNamePrefix:
+  message: "What is your component class name prefix?"

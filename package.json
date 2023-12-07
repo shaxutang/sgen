@@ -1,0 +1,71 @@
+{
+  "name": "@vcee/sgen",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A simple cli tool to generate a project",
+  "bin": {
+    "sgen": "index.js"
+  },
+  "files": [
+    "index.js",
+    "dist",
+    "presets"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaxutang/sgen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shaxutang/sgen/issues"
+  },
+  "homepage": "https://github.com/shaxutang/sgen#readme",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development tsup && node index.js",
+    "build": "cross-env NODE_ENV=production tsup",
+    "build:ui": "cd packages/ui && tsx scripts/build.ts",
+    "test": "cross-env NODE_ENV=test vitest",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "sgen"
+  ],
+  "author": "shaxutang <olaysunju@163.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "change-case": "^5.2.0",
+    "commander": "^11.1.0",
+    "directory-tree": "^3.5.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "js-yaml": "^4.1.0",
+    "open": "^9.1.0",
+    "prompts": "^2.4.2",
+    "recursive-copy": "^2.0.14",
+    "shelljs": "^0.8.5",
+    "through2": "^4.0.2",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^4.17.21",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.10.3",
+    "@types/prompts": "^2.4.9",
+    "@types/shelljs": "^0.8.15",
+    "@types/through2": "^2.0.41",
+    "@types/validator": "^13.11.7",
+    "@vcee/sgen-types": "workspace:^",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "tsup": "^8.0.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.2",
+    "vitest": "^0.34.6"
+  }
+}
