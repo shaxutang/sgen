@@ -1,0 +1,45 @@
+{
+  "name": "<%= name %>",
+  "version": "1.0.0",
+  "description": "please enter the module description.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<%= sgenrc.username %>/<%= name %>/issues"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development tsup",
+    "build": "cross-env NODE_ENV=production tsup",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "<%= sgenrc.username %> <<%= sgenrc.email%>>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "dependencies": {
+    "clsx": "latest"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "latest",
+    "@types/node": "latest",
+    "cross-env": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "tsup": "latest",
+    "typescript": "latest"
+  }
+}

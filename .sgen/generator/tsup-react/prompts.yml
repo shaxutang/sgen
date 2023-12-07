@@ -1,0 +1,7 @@
+name:
+  type: "text"
+  message: "What is your component name?"
+  initial: "my-component"
+classNamePrefix:
+  type: "text"
+  message: "What is your component component prefix?"
