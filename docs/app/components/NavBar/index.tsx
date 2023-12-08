@@ -1,0 +1,33 @@
+"use client";
+
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import clsx from "clsx";
+import Link from "next/link";
+import useDarkMode from "use-dark-mode";
+import { NavBarProps } from "./type";
+
+export default function NavBar({ className, ...rest }: NavBarProps) {
+  const darkMode = useDarkMode(false);
+  return (
+    <header className={clsx(className, "border-color-base border-b")} {...rest}>
+      <div className="flex h-16 items-center justify-between px-16">
+        <Link href="/">
+          <h1 className="text-xl font-bold">SGEN</h1>
+        </Link>
+        <div className="space-x-6">
+          <Link href="https://github.com/shaxutang/sgen" target="_blank">
+            <FontAwesomeIcon icon={faGithub} className="text-xl" />
+          </Link>
+          <button onClick={darkMode.toggle}>
+            <FontAwesomeIcon
+              icon={darkMode.value ? faMoon : faSun}
+              className="text-xl"
+            />
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}
