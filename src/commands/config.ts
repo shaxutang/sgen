@@ -57,7 +57,7 @@ function handleRemove(option: string): void {
 }
 
 function handleInit() {
-  sgenrcEntity.saveSgenrcFromGithub();
+  sgenrcEntity.promptsRequiredVariables();
 }
 
 /**

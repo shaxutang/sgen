@@ -4,7 +4,6 @@ import os from "node:os";
 import { join } from "node:path";
 import dotenv from "dotenv";
 import { Sgenrc, MergeSgenrc } from "@vcee/sgen-types";
-import server from "../server/github";
 import { isExistsSync } from "../utils/fs";
 import { error, success } from "../utils/log";
 import { Dir } from "./constans";
@@ -22,74 +21,53 @@ class SgenrcEntity {
   private cwdSgenrcPath: string = join(process.cwd(), Dir.SGEN, this.fileName);
 
   /**
-   * Saves the sgenrc information from GitHub and overrides the existing operating system sgenrc file.
+   * Asynchronously request necessary variables.
    */
-  async saveSgenrcFromGithub() {
-    try {
-      success("Please complete the certification first.");
-
-      // Start the server and call getUserCallback() method to get the GitHub user information
-      const githubUser = await server.start().getUserCallback();
-
-      success("Certification completed.");
-
-      // Use GitHub user information or the contents of the operating system sgenrc file for sgenrc
-      const sgenrc = {
-        ...this.getOsSgenrc(),
-        ...githubUser,
-      };
-
-      this.writeOsSgenrc(sgenrc);
-      success(
-        [
-          this.osSgenrcPath,
-          "\n",
-          this.formatSgenrc(sgenrc),
-          "\n",
-          "saved.",
-        ].join("\n"),
-      );
-    } catch {
-      error(
-        "Error connecting to GitHub, Please enter, Please enter as prompted",
-      );
-      const variables = await prompts([
-        {
-          type: "text",
-          name: "username",
-          message: "What's your Github username?",
-          validate(value) {
-            return !!value;
-          },
+  async promptsRequiredVariables() {
+    /**
+     * Asynchronously request for username and email variables.
+     */
+    const variables = await prompts([
+      {
+        type: "text",
+        name: "username",
+        message: "What's your Github username?",
+        validate(value) {
+          return !!value;
         },
-        {
-          type: "text",
-          name: "email",
-          message: "What's your email?",
-          validate(value) {
-            return !!value;
-          },
+      },
+      {
+        type: "text",
+        name: "email",
+        message: "What's your email?",
+        validate(value) {
+          return !!value;
         },
-      ]);
+      },
+    ]);
 
-      const sgenrc = {
-        ...this.getOsSgenrc(),
-        ...variables,
-      };
-      this.writeOsSgenrc(sgenrc);
-      success(
-        [
-          this.osSgenrcPath,
-          "\n",
-          this.formatSgenrc(sgenrc),
-          "\n",
-          "saved.",
-        ].join("\n"),
-      );
-    } finally {
-      // Close the server connection
-      server.close();
-    }
+    /**
+     * Construct the sgenrc object.
+     * Includes the existing sgenrc in the operating system and the requested variables.
+     */
+    const sgenrc = {
+      ...this.getOsSgenrc(),
+      ...variables,
+    };
+
+    /**
+     * Write the constructed sgenrc object into the operating system.
+     */
+    this.writeOsSgenrc(sgenrc);
+
+    /**
+     * Display a success message indicating saving was successful.
+     */
+    success(
+      [this.osSgenrcPath, "\n", this.formatSgenrc(sgenrc), "\n", "saved."].join(
+        "\n",
+      ),
+    );
   }
 
   /**
