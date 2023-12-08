@@ -83,5 +83,7 @@ test("render seperator template", () => {
 test("when the variable does not exist", () => {
   expect(
     render("tramsform result: <%= s.changeCase.camelCase(name) %>", {}),
-  ).toMatchInlineSnapshot('"tramsform result: <%= s.changeCase.camelCase(name) %>"');
+  ).toMatchInlineSnapshot(
+    '"tramsform result: <%= s.changeCase.camelCase(name) %>"',
+  );
 });

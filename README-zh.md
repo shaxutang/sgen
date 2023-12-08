@@ -43,13 +43,17 @@ sgen init
 - .sgenrc：配置文件，该问价中的配置会覆盖`~/user/.sgenrc`的配置。
 
 ## 请特别注意
+
 > [!WARNING]
 > 如果你使用默认的模板，那么你需要先在`~/user/.sgenrc`或者`{cwd}/.sgen/.sgenrc`设置环境变量`username`和`password`
+>
 > ```txt
 > username=你的Gihub用户名
 > email=你的邮箱
 > ```
+>
 > 因为默认提供的模板中会使用到这两个变量
+>
 > ```json
 > {
 >   ...
@@ -65,20 +69,23 @@ sgen init
 >   ...
 > }
 > ```
+>
 > 如果不提供会在创建时会发出警告
-> 
+>
 > 你可以执行
+>
 > ```bash
 > sgen config init
 > ```
+>
 > 该操作会进行Gihub认证然后写入环境变量
-> 
+>
 > 也可以执行
+>
 > ```bash
 > sgen config set username=你的Github用户名
 > sgen config set email=你的邮箱
 > ```
-   
 
 ## 根据模板创建项目
 

@@ -43,13 +43,17 @@ This file contains:
 - .sgenrc: Configuration file, the configuration in this request will overwrite the configuration of `~/user/.sgenrc`.
 
 ## Please pay special attention
+
 > [!WARNING]
 > If you use the default template, then you need to set the environment variables `username` and `password` in `~/user/.sgenrc` or `{cwd}/.sgen/.sgenrc` first
+>
 > ```txt
 > username=your Gihub username
 > email=your email
 > ```
+>
 > Because these two variables are used in the template provided by default
+>
 > ```json
 > {
 >   ...
@@ -65,16 +69,19 @@ This file contains:
 >   ...
 > }
 > ```
+>
 > If not provided, a warning will be issued when creating
 >
 > You can execute
-> 
+>
 > ```bash
 > sgen config init
 > ```
+>
 > This operation will perform Gihub authentication and then write the environment variables
 >
 > You can also execute
+>
 > ```bash
 > sgen config set username=your Github username
 > sgen config set email=your email

@@ -1,5 +1,5 @@
 /**
- * you can exec "sgen vite-vue-ui" to generate a new component
+ * you can exec "sgen" then select "vite-vue-ui" to generate a new component
  */
 import { App } from "vue";
 // import component

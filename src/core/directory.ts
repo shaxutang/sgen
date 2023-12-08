@@ -1,13 +1,9 @@
-// Import necessary modules
 import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import dirTree from "directory-tree";
-import { Separator } from "@inquirer/prompts";
-import { Folder, MergeDirTree } from "@vcee/sgen-types";
 import { Dir } from "../core/constans";
 import sgenrcEntity from "../core/sgenrc";
 import { isExistsSync } from "../utils/fs";
-import { formatSeperatorString } from "../utils/string";
 
 // Define a choice type with name and value properties
 export type Choice = {
@@ -63,7 +59,7 @@ export class SgenDir {
   }
 
   // Generate a tree structure of the directories
-  treeDirs(): MergeDirTree {
+  treeDirs() {
     // Get the sgenDirPath, workspacePath, and presetPath from the getDirPath() instance method
     const { sgenDirPath, workspacePath } = this.getDirPath();
     // Initialize a directory-tree configuration object
@@ -73,8 +69,8 @@ export class SgenDir {
       followSymlinks: true,
     };
     // Generate tree structures for sgenDirTree, workspaceDirTree, and presetDirTree using the dirTree module
-    const sgenDirTree = dirTree(sgenDirPath, config) as Folder;
-    const workspaceDirTree = dirTree(workspacePath, config) as Folder;
+    const sgenDirTree = dirTree(sgenDirPath, config);
+    const workspaceDirTree = dirTree(workspacePath, config);
     // Return an object with sgenDirTree, workspaceDirTree, and presetDirTree
     return {
       sgenDirTree,
