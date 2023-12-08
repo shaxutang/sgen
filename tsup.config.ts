@@ -21,6 +21,5 @@ export default defineConfig({
   format: ["esm"],
   clean: isProd,
   minify: true,
-  publicDir: "public",
   ...(isProd ? propdOptions : {}),
 });
