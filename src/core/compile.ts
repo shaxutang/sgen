@@ -40,7 +40,7 @@ export function compileEjsTemplate(template: string):
   if (match) {
     // Trim the frontmatter and content obtained from the match.
     const frontmatter = dotenv.parse<Frontmatter>(match[1]);
-    const content = match[2];
+    const content = `\n${match[2].trim()}`;
 
     // Return an object with the frontmatter and content.
     return { frontmatter, content };

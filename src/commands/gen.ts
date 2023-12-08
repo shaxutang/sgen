@@ -202,8 +202,8 @@ export default async function () {
       const toDir = to.substring(0, to.lastIndexOf("/"));
 
       // Create the necessary directories if they don't exist
-      if (!(await isExists(toDir))) {
-        await mkdir(to.substring(0, to.lastIndexOf("/")), { recursive: true });
+      if (!!toDir && !(await isExists(toDir))) {
+        await mkdir(toDir, { recursive: true });
       }
 
       // Handle 'add' category
