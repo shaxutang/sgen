@@ -45,7 +45,7 @@ This file contains:
 ## Please pay special attention
 
 > [!WARNING]
-> If you use the default template, then you need to set the environment variables `username` and `password` in `~/user/.sgenrc` or `{cwd}/.sgen/.sgenrc` first
+> If you use the default template, then you need to set the environment variables `username` and `email` in `~/user/.sgenrc` or `{cwd}/.sgen/.sgenrc` first
 >
 > ```txt
 > username=your Gihub username

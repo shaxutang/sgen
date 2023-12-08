@@ -45,7 +45,7 @@ sgen init
 ## 请特别注意
 
 > [!WARNING]
-> 如果你使用默认的模板，那么你需要先在`~/user/.sgenrc`或者`{cwd}/.sgen/.sgenrc`设置环境变量`username`和`password`
+> 如果你使用默认的模板，那么你需要先在`~/user/.sgenrc`或者`{cwd}/.sgen/.sgenrc`设置环境变量`username`和`email`
 >
 > ```txt
 > username=你的Gihub用户名
