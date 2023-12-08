@@ -1,5 +1,12 @@
 import { Sgenrc } from "@vcee/sgen-types";
-import sgenrcEntity from "../core/sgenrc";
+import {
+  formatSgenrc,
+  getOsSgenrc,
+  getOsSgenrcPath,
+  promptsRequiredVariables,
+  removeFieldFromOsSgenrc,
+  setFieldToOsSgenrc,
+} from "../core/sgenrc";
 import { success, warn } from "../utils/log";
 
 /**
@@ -17,8 +24,8 @@ export type ConfigOptions = {
 function handleList(): void {
   success(
     [
-      `${sgenrcEntity.getOsSgenrcPath()} env variables below:\n`,
-      sgenrcEntity.formatSgenrc(sgenrcEntity.getOsSgenrc()),
+      `${getOsSgenrcPath()} env variables below:\n`,
+      formatSgenrc(getOsSgenrc()),
     ].join("\n"),
   );
 }
@@ -37,7 +44,7 @@ function handleSet(option: string): void {
       );
       return;
     }
-    sgenrcEntity.setFieldToOsSgenrc(key, value);
+    setFieldToOsSgenrc(key, value);
     success(`Set "${key}" to ${value}" success`);
   } else {
     warn(
@@ -52,12 +59,12 @@ function handleSet(option: string): void {
  * @returns {void} - A promise that resolves after handling the 'remove' action.
  */
 function handleRemove(option: string): void {
-  sgenrcEntity.removeFieldFromOsSgenrc(option);
+  removeFieldFromOsSgenrc(option);
   success(`removed ${option} success`);
 }
 
 function handleInit() {
-  sgenrcEntity.promptsRequiredVariables();
+  promptsRequiredVariables();
 }
 
 /**

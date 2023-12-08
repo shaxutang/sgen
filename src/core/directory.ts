@@ -2,7 +2,7 @@ import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import dirTree from "directory-tree";
 import { Dir } from "../core/constans";
-import sgenrcEntity from "../core/sgenrc";
+import { getSgenrc } from "../core/sgenrc";
 import { isExistsSync } from "../utils/fs";
 
 // Define a choice type with name and value properties
@@ -12,7 +12,7 @@ export type Choice = {
   value: string;
 };
 
-export class SgenDir {
+export class Directory {
   // Define private properties for sgenDirPath and dir
   private sgenDirPath: string;
   private dir: string;
@@ -24,13 +24,13 @@ export class SgenDir {
     this.loadAllDirChoices();
   }
 
-  // Get the sgenDirPath of the SgenDir instance
+  // Get the sgenDirPath of the Directory instance
   getDirPath(): {
     sgenDirPath: string;
     workspacePath: string;
   } {
     // Get sgenrc configuration
-    const sgenrc = sgenrcEntity.getSgenrc();
+    const sgenrc = getSgenrc();
     // Return an object with sgenDirPath, workspacePath, and presetPath
     return {
       sgenDirPath: this.sgenDirPath,

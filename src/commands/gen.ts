@@ -4,9 +4,8 @@ import { join } from "node:path";
 import chalk from "chalk";
 import { Frontmatter, compileEjsTemplate, render } from "../core/compile";
 import { Dir, GENERATOR_SEPERATOR } from "../core/constans";
-import { SgenDir } from "../core/directory";
+import { Directory } from "../core/directory";
 import prompts, { getPromptsVariables, isPrompts } from "../core/prompts";
-import sgenrcEntity from "../core/sgenrc";
 import { isExists } from "../utils/fs";
 import { error, success, warn } from "../utils/log";
 
@@ -102,10 +101,7 @@ async function handleAppend({
  * Generate files based on the specified template and name.
  */
 export default async function () {
-  // Get the configuration from .sgenrc file
-  const sgenrc = sgenrcEntity.getSgenrc();
-
-  const sgenDir = new SgenDir(Dir.GENERATOR);
+  const sgenDir = new Directory(Dir.GENERATOR);
 
   // Get a list of template choices
   const allDirs = sgenDir.getAllDirs();

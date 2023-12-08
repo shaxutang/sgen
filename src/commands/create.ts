@@ -5,7 +5,7 @@ import copy from "recursive-copy";
 import through2 from "through2";
 import { render } from "../core/compile";
 import { Dir } from "../core/constans";
-import { SgenDir } from "../core/directory";
+import { Directory } from "../core/directory";
 import prompts, {
   Question,
   getPromptsVariables,
@@ -18,7 +18,7 @@ import { success, error, warn } from "../utils/log";
  * Create a new project based on user input and options.
  */
 export default async function () {
-  const sgenDir = new SgenDir(Dir.CREATOR);
+  const sgenDir = new Directory(Dir.CREATOR);
 
   const allDirs = sgenDir.getAllDirs();
 

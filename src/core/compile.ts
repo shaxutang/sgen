@@ -1,10 +1,10 @@
 import * as changeCase from "change-case";
 import dotenv from "dotenv";
 import ejs from "ejs";
-import sgenrcEntity from "../core/sgenrc";
+import { getSgenrc } from "../core/sgenrc";
 import { warn } from "../utils/log";
 
-const sgenrc = sgenrcEntity.getSgenrc();
+const sgenrc = getSgenrc();
 
 export const defaultVariables = {
   s: {

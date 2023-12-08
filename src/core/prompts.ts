@@ -1,7 +1,6 @@
 import { readFile } from "fs/promises";
 import yaml from "js-yaml";
 import prompts from "prompts";
-import { error } from "../utils/log";
 
 export const matchPromtsFileRegExp = /prompts.(yml|yaml)$/;
 
