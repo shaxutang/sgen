@@ -78,7 +78,7 @@ This file contains:
 > sgen config init
 > ```
 >
-> This operation will perform Gihub authentication and then write the environment variables
+> This will guide you through setting some necessary environment variables.
 >
 > You can also execute
 >
