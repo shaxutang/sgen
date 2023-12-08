@@ -71,9 +71,9 @@ sgen init
 > ```bash
 > sgen config init
 > ```
-> 该操作会进行Gihub认证然后写入环境变量
+> 这将会引导你设置一些必要的环境变量
 > 
-> 也可以执行
+> 你也可以执行
 > ```bash
 > sgen config set username=你的Github用户名
 > sgen config set email=你的邮箱
