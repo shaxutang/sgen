@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { editor } from "monaco-editor";
 import dynamic from "next/dynamic";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EditorProps } from "./type";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
@@ -37,7 +37,7 @@ function detectLanguage(fileName: string): string {
     extensions.includes(lowerCaseExtension),
   );
 
-  return lang ? lang[0] : "";
+  return lang ? lang[0] : "txt";
 }
 
 export default function Editor({
@@ -48,6 +48,7 @@ export default function Editor({
   ...rest
 }: EditorProps) {
   const { isDark } = useDark();
+  const [language, setLanguage] = useState("txt");
   const monaco = useRef<editor.IStandaloneCodeEditor>(null!);
 
   function handleChange(value: string | undefined) {
@@ -60,6 +61,7 @@ export default function Editor({
 
   useEffect(() => {
     monaco.current?.setValue(file?.getContent() || "");
+    setLanguage(detectLanguage(file?.getName() || ""));
   }, [file]);
 
   return (
@@ -75,7 +77,7 @@ export default function Editor({
       <MonacoEditor
         theme={isDark ? "vs-dark" : "vs-light"}
         height="calc(100vh - 4rem - 1px)"
-        language={detectLanguage(file?.getName() || "")}
+        language={language}
         onChange={handleChange}
         onMount={handleEditorDidMount}
         className={clsx({
