@@ -14,15 +14,14 @@ export function render(template: string, variables: Record<string, any>) {
   try {
     return ejs.render(template, vars);
   } catch (err) {
-    const str = [
-      "---------------------------",
-      `${(err as Error).message}`,
-      "\n",
-      "The file will not be rendered",
-      "---------------------------",
-      "\n",
-      template,
-    ].join("\n");
+    const max = (err as Error).message
+      .split("\n")
+      .map((s) => s.length)
+      .sort((a, b) => b - a)[0];
+
+    const line = Array.from({ length: max }, () => "-").join("");
+
+    const str = [line, `${(err as Error).message}`, line, template].join("\n");
     return str;
   }
 }
