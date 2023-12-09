@@ -27,9 +27,10 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
   const [preview, setPreview] = useState("");
   const [variables] = useLocalStorage<StoreVariables>("variables", {
     sgenrc: {
-      username: "",
-      email: "",
+      username: "shaxutang",
+      email: "olaysunju@163.com",
     },
+    name: "sgen",
   });
 
   const context = new Context({

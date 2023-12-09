@@ -39,9 +39,10 @@ export default function VariablesModalButton({
     "variables",
     {
       sgenrc: {
-        username: "",
-        email: "",
+        username: "shaxutang",
+        email: "olaysunju@163.com",
       },
+      name: "sgen",
     },
   );
 
@@ -56,9 +57,7 @@ export default function VariablesModalButton({
     });
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-
   const [sgenrc, setSgenrc] = useState<Sgenrc>(variables.sgenrc);
-
   const [otherVariables, setOtherVariables] =
     useState<Variable[]>(storeOtherVariables);
 
