@@ -8,6 +8,7 @@ import {
 import { isCreator, isGenerator } from "@/app/core/sgen";
 import clsx from "clsx";
 import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 import Editor from "../Editor";
 import FileTree from "../FileTree";
 import {
@@ -17,12 +18,19 @@ import {
   FolderEntity,
 } from "../FileTree/explore";
 import Preview from "../Preview";
+import { StoreVariables } from "../VariablesModalButton";
 import { PlaygroundProps } from "./type";
 
 export default function Playground({ className, ...rest }: PlaygroundProps) {
   const [state, setState] = useState(false);
   const [currentFile, setcurrentFile] = useState<FileEntity>(null!);
   const [preview, setPreview] = useState("");
+  const [variables] = useLocalStorage<StoreVariables>("variables", {
+    sgenrc: {
+      username: "",
+      email: "",
+    },
+  });
 
   const context = new Context({
     forceUpdate: () => setState(!state),
@@ -36,47 +44,56 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
       [
         new FolderEntity("creator", [
           new FolderEntity("tsup", [
+            new FolderEntity("src", [
+              new FileEntity("index.ts", `const name="<%= name %>"`),
+            ]),
             new FileEntity(
               "package.json",
-              `{
-    "name": "<%= name %>",
-    "version": "1.0.0",
-    "description": "please enter the module description.",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.ts",
-    "files": [
-      "dist"
-    ],
-    "homepage": "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git"
-    },
-    "bugs": {
-      "url": "https://github.com/<%= sgenrc.username %>/<%= name %>/issues"
-    },
-    "scripts": {
-      "dev": "cross-env NODE_ENV=development tsup",
-      "build": "cross-env NODE_ENV=production tsup",
-      "format": "prettier --write ."
-    },
-    "keywords": [],
-    "author": "<%= sgenrc.username %> <<%= sgenrc.email%>>",
-    "license": "MIT",
-    "devDependencies": {
-      "@types/node": "latest",
-      "tsup": "latest",
-      "typescript": "latest",
-      "cross-env": "latest",
-      "@trivago/prettier-plugin-sort-imports": "latest"
-    }
-  }
-  `,
+              JSON.stringify(
+                {
+                  name: "<%= name %>",
+                  homepage:
+                    "https://github.com/<%= sgenrc.username %>/<%= name %>#readme",
+                  repository: {
+                    type: "git",
+                    url: "git+https://github.com/<%= sgenrc.username %>/<%= name %>.git",
+                  },
+                  bugs: {
+                    url: "https://github.com/<%= sgenrc.username %>/<%= name %>/issues",
+                  },
+                  author: "<%= sgenrc.username %> <<%= sgenrc.email%>>",
+                },
+                null,
+                2,
+              ),
             ),
           ]),
         ]),
-        new FolderEntity("generator"),
+        new FolderEntity("generator", [
+          new FolderEntity("rc-components", [
+            new FileEntity(
+              "comp.add.t",
+              [
+                "---",
+                "to: src/components/<%= s.changeCase.pascalCase(name) %>.tsx",
+                "---",
+                "export default function <%= s.changeCase.pascalCase(name) %>() {",
+                "  return <div></div>;",
+                "}",
+              ].join("\n"),
+            ),
+            new FileEntity(
+              "index.append.t",
+              [
+                "---",
+                "to: src/index.ts",
+                "pattern: // export component",
+                "---",
+                'export { default as <%= s.changeCase.pascalCase(name) %> } from "./comopnents/<%= s.changeCase.pascalCase(name) %>.tsx;"',
+              ].join("\n"),
+            ),
+          ]),
+        ]),
       ],
       context,
     ),
@@ -90,6 +107,7 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
         method: "POST",
         body: JSON.stringify({
           content: currentFile.getContent() ?? "",
+          variables,
         }),
       }).then((res) => res.json());
       setPreview(content);
@@ -108,6 +126,7 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
           method: "POST",
           body: JSON.stringify({
             templates,
+            variables,
           }),
         },
       ).then((res) => res.json());
