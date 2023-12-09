@@ -37,11 +37,11 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
     setPreview([frontmatter, content].join("\n"));
   }
 
-  function onClick(explore: Explore) {
+  async function onClick(explore: Explore) {
     explore.setActive(true);
     if (explore instanceof FileEntity) {
       setcurrentFile(explore);
-      renderPreview();
+      await renderPreview();
       console.log("click...", explore);
     }
   }
