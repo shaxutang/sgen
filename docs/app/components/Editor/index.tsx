@@ -1,7 +1,7 @@
 "use client";
+import { useDark } from "@/app/hooks/useDark";
 import MonacoEditor from "@monaco-editor/react";
 import clsx from "clsx";
-import useDarkMode from "use-dark-mode";
 import { EditorProps } from "./type";
 
 function detectLanguage(fileName: string): string {
@@ -38,7 +38,7 @@ export default function Editor({
   file,
   ...rest
 }: EditorProps) {
-  const darkMode = useDarkMode(false);
+  const { isDark } = useDark();
 
   function handleChange(value: string | undefined) {
     file?.setContent(value || "");
@@ -47,7 +47,7 @@ export default function Editor({
   return (
     <div className={clsx("h-full", className)} {...rest}>
       <MonacoEditor
-        theme={darkMode.value ? "vs-dark" : "vs-light"}
+        theme={isDark ? "vs-dark" : "vs-light"}
         height="100%"
         language={detectLanguage(file?.getName() || "javascript")}
         defaultLanguage="javascript"

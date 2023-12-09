@@ -11,13 +11,3 @@
     @apply cursor-pointer px-2 hover:bg-gray-100 dark:hover:bg-gray-600;
   }
 }
-
-body.light-mode {
-  @apply text-gray-600;
-  transition: background-color 0.3s ease;
-}
-
-body.dark-mode {
-  @apply bg-[#252525] text-white;
-  transition: background-color 0.3s ease;
-}
