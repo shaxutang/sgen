@@ -28,7 +28,6 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
-    "monaco-editor-webpack-plugin": "^7.1.0",
     "postcss": "^8",
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.9",
