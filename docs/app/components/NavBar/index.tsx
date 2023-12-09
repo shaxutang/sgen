@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import Link from "next/link";
 import { NavBarProps } from "./type";
+import VariablesModalButton from "../VariablesModalButton";
 
 export default function NavBar({ className, ...rest }: NavBarProps) {
   const { isDark, toggle } = useDark();
@@ -17,6 +18,7 @@ export default function NavBar({ className, ...rest }: NavBarProps) {
           <h1 className="text-xl font-bold">SGEN</h1>
         </Link>
         <div className="space-x-6">
+          <VariablesModalButton />
           <Link href="https://github.com/shaxutang/sgen" target="_blank">
             <FontAwesomeIcon icon={faGithub} className="text-xl" />
           </Link>
