@@ -8,14 +8,14 @@ import { FileTreeProps } from "./type";
 export default function FileTree({
   className,
   explores,
-  onClick,
-  onCreate,
   ...rest
 }: FileTreeProps) {
-  const root = new FolderEntity(
-    "/",
-    Array.isArray(explores) ? explores : [explores],
-  );
+  const root = new FolderEntity("/", [
+    new FolderEntity(
+      "project",
+      Array.isArray(explores) ? explores : [explores],
+    ),
+  ]);
 
   return (
     <div className={clsx("px-2 py-4", className)} {...rest}>

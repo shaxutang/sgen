@@ -2,20 +2,40 @@ export type Handler = Partial<{
   forceUpdate: () => void;
   onClick: (explore: Explore, e: React.MouseEvent) => void;
   onCreate: (explore: Explore) => void;
-  isSelected: (explore: Explore) => boolean;
 }>;
 
-export abstract class CommonEntity {
+export class Context {
+  private _forceUpdate?: () => void;
+  private _onClick?: (explore: Explore, e: React.MouseEvent) => void;
+  private _onCreate?: (explore: Explore) => void;
+
+  constructor({ forceUpdate, onClick, onCreate }: Handler) {
+    this._forceUpdate = forceUpdate;
+    this._onClick = onClick;
+    this._onCreate = onCreate;
+  }
+
+  forceUpdate() {
+    this._forceUpdate?.();
+  }
+
+  onClick(explore: Explore, e: React.MouseEvent) {
+    this._onClick?.(explore, e);
+  }
+
+  onCreate(explore: Explore) {
+    this._onCreate?.(explore);
+  }
+}
+
+abstract class BaseEntity {
   protected name: string;
-  protected path: string;
   protected active: boolean = false;
-  protected handler?: Handler;
+  private context?: Context;
   protected parent?: FolderEntity;
 
-  constructor(name: string, handler?: Handler) {
+  constructor(name: string) {
     this.name = name;
-    this.path = `${this.name}` === "/" ? "" : `/${this.name}`;
-    this.handler = handler;
   }
 
   setActive(active: boolean) {
@@ -29,8 +49,6 @@ export abstract class CommonEntity {
 
   setParent(parent: FolderEntity) {
     this.parent = parent;
-    this.path = `${parent.getPath()}/${this.name}`;
-    this.handler = this.handler ?? parent.getHandler();
   }
 
   getParent() {
@@ -38,15 +56,15 @@ export abstract class CommonEntity {
   }
 
   notify() {
-    this.handler?.forceUpdate?.();
+    this.context?.forceUpdate?.();
   }
 
-  setHandler(handler?: Handler) {
-    this.handler = handler;
+  setContext(context: Context) {
+    this.context = context;
   }
 
-  getHandler() {
-    return this.handler;
+  getContext(): Context | undefined {
+    return this.context ?? this.parent?.getContext();
   }
 
   getName(): string {
@@ -55,31 +73,31 @@ export abstract class CommonEntity {
 
   setName(newName: string) {
     this.name = newName;
-    this.path = `${this.path.replace(this.name, "")}/${newName}`;
+    this.checkSameName(this as unknown as Explore);
     this.notify();
   }
 
   getPath(): string {
-    return this.path;
+    const parent = this.getParent();
+    const isRoot = parent?.isRoot();
+    const path = isRoot ? "" : parent?.getPath();
+    return [path, this.name].filter((name) => name !== undefined).join("/");
   }
 
-  setPath(newPath: string) {
-    this.path = newPath;
-    this.notify();
-  }
+  abstract checkSameName(explore: Explore): void;
 
   abstract getType(): string;
 
   abstract onClick(e: React.MouseEvent): void;
 }
 
-export class FileEntity extends CommonEntity {
+export class FileEntity extends BaseEntity {
   private content: string;
   private extension: string = "";
   private type: string = "file";
 
-  constructor(name: string, content: string = "", handler?: Handler) {
-    super(name, handler);
+  constructor(name: string, content: string = "") {
+    super(name);
     this.content = content;
     this.reGenerateExtension();
   }
@@ -107,28 +125,32 @@ export class FileEntity extends CommonEntity {
   }
 
   onClick(e: React.MouseEvent) {
-    this.handler?.onClick?.(this, e);
+    this.getContext()?.onClick?.(this, e);
+  }
+
+  checkSameName(explore: Explore) {
+    this.parent?.checkSameName(explore);
   }
 }
 
-export class FolderEntity extends CommonEntity {
+export class FolderEntity extends BaseEntity {
   private explores: Explore[] = [];
   private type: string = "directory";
 
-  constructor(name: string, explores: Explore[] = [], handler?: Handler) {
-    super(name, handler);
+  constructor(name: string, explores: Explore[] = [], context?: Context) {
+    super(name);
     this.explores = explores.map((explore) => {
       explore.setParent(this);
       return explore;
     });
+    context && this.setContext(context);
   }
 
   isRoot() {
-    return this.path === "/";
+    return this.getPath() === "/";
   }
 
   createFolder(folder: FolderEntity) {
-    folder.setHandler(this.handler);
     folder.setParent(this);
     this.checkSameName(folder);
     this.explores.push(folder);
@@ -136,7 +158,6 @@ export class FolderEntity extends CommonEntity {
   }
 
   createFile(file: FileEntity) {
-    file.setHandler(this.handler);
     file.setParent(this);
     this.checkSameName(file);
     this.explores.push(file);
@@ -157,33 +178,37 @@ export class FolderEntity extends CommonEntity {
   }
 
   onClick(e: React.MouseEvent) {
-    this.handler?.onClick?.(this, e);
+    this.getContext()?.onClick?.(this, e);
   }
 
   onCreate(explore: Explore) {
-    this.handler?.onCreate?.(explore);
+    this.getContext()?.onCreate?.(explore);
   }
 
-  private checkSameName(explore: Explore) {
+  private generateNewName(baseName: string, extension?: string): string {
+    const timestamp = new Date().getTime();
+    return !!extension
+      ? `${baseName.substring(
+          0,
+          baseName.lastIndexOf("."),
+        )}-${timestamp}.${extension}`
+      : `${baseName}-${timestamp}`;
+  }
+
+  checkSameName(explore: Explore) {
     const index = this.explores.findIndex(
       (ex) => ex.getName() === explore.getName(),
     );
+    const currentName = explore.getName();
     if (index !== -1) {
-      const currentName = explore.getName();
       if (explore instanceof FileEntity) {
-        const entension = explore.getExtension();
         explore.setName(
-          !!entension
-            ? `${currentName.substring(
-                0,
-                currentName.lastIndexOf("."),
-              )}-${new Date().getTime()}.${explore.getExtension()}`
-            : `${currentName}-${new Date().getTime()}`,
+          this.generateNewName(currentName, explore.getExtension()),
         );
       }
-      if (explore instanceof FolderEntity)
-        explore.setName(`${currentName}-${new Date().getTime()}`);
-      explore.setPath(`${this.path}/${explore.getName()}`);
+      if (explore instanceof FolderEntity) {
+        explore.setName(this.generateNewName(currentName));
+      }
     }
   }
 }

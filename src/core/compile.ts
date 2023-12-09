@@ -31,7 +31,7 @@ export function compileEjsTemplate(template: string):
     }
   | undefined {
   // Regular expression for matching the template.
-  const regex = /---([\s\S]+?)---([\s\S]+)/;
+  const regex = /---([\s\S]+?)---([\s\S]*)/;
 
   // Match the template string with the regular expression.
   const match = template.match(regex);
