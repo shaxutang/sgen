@@ -10,4 +10,8 @@
   .explore {
     @apply cursor-pointer px-2 hover:bg-gray-100 dark:hover:bg-gray-600;
   }
+
+  .main-h {
+    @apply h-[100vh-4rem-1px];
+  }
 }

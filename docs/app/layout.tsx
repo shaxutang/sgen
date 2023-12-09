@@ -1,6 +1,7 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { clsx } from "clsx";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NavBar from "./components/NavBar";
 import "./globals.css";
@@ -9,6 +10,11 @@ import { Providers } from "./providers";
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "SGEN | Welcome",
+  description: "A simple cli tool to generate a project.",
+};
 
 export default function RootLayout({
   children,

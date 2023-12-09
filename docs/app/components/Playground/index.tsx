@@ -12,7 +12,7 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
   const [currenFile, setcurrentFile] = useState<FileEntity>(null!);
   const [state, setState] = useState(false);
 
-  const [explores] = useState<Explore[]>([
+  const [explores] = useState<Explore>(
     new FolderEntity(
       ".sgen",
       [new FolderEntity("creator"), new FolderEntity("generator")],
@@ -22,10 +22,11 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
         onCreate,
       },
     ),
-  ]);
+  );
 
   function onClick(explore: Explore) {
     if (explore instanceof FileEntity) {
+      console.log("click...");
       setcurrentFile(explore);
       console.log(explore);
     }
@@ -33,6 +34,7 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
 
   function onCreate(explore: Explore) {
     if (explore instanceof FileEntity) {
+      console.log("create...");
       setcurrentFile(explore);
       console.log(explore);
     }

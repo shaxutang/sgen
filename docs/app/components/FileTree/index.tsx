@@ -1,23 +1,25 @@
 "use client";
 
 import clsx from "clsx";
-import { useState } from "react";
 import FileExplore from "./FileExplore";
-import { Explore } from "./explore";
+import { FolderEntity } from "./explore";
 import { FileTreeProps } from "./type";
 
 export default function FileTree({
   className,
-  explores: expls,
+  explores,
   onClick,
   onCreate,
   ...rest
 }: FileTreeProps) {
-  const [explores] = useState<Explore[]>(expls);
+  const root = new FolderEntity(
+    "/",
+    Array.isArray(explores) ? explores : [explores],
+  );
 
   return (
     <div className={clsx("px-2 py-4", className)} {...rest}>
-      <FileExplore explores={explores} />
+      <FileExplore explores={root.getExplores()} />
     </div>
   );
 }

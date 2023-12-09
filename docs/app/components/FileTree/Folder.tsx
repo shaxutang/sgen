@@ -1,6 +1,7 @@
 "use client";
 
-import { faFolder, faFolderClosed } from "@fortawesome/free-solid-svg-icons";
+import { faFolderOpen } from "@fortawesome/free-regular-svg-icons";
+import { faFolder } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { useRef, useState } from "react";
@@ -105,22 +106,24 @@ export default function Folder(props: FolderProps) {
       >
         <div>
           <div className="text-sm leading-loose">
-            <FontAwesomeIcon
-              icon={open ? faFolderClosed : faFolder}
-              className="mr-1"
-            />
+            <div className="inline-block w-5">
+              <FontAwesomeIcon
+                icon={open ? faFolderOpen : faFolder}
+                className="mr-1"
+              />
+            </div>
             <span>{name}</span>
           </div>
         </div>
         <div className="hidden space-x-2 text-gray-400  group-hover:block">
           <button
-            className="relative transition-all hover:text-gray-500 dark:hover:text-white"
+            className="relative align-text-top text-lg transition-all hover:text-gray-500 dark:hover:text-white"
             onClick={handleCreateFolder}
           >
             <TablerFolderPlus />
           </button>
           <button
-            className="relative transition-all hover:text-gray-500 dark:hover:text-white"
+            className="relative align-text-top text-lg transition-all hover:text-gray-500 dark:hover:text-white"
             onClick={handleCreateFile}
           >
             <MdiFilePlusOutline />

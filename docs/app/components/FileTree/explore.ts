@@ -12,7 +12,7 @@ export abstract class CommonEntity {
 
   constructor(name: string, handler?: Handler) {
     this.name = name;
-    this.path = `/${this.name}`;
+    this.path = `${this.name}` === "/" ? "" : `/${this.name}`;
     this.handler = handler;
   }
 

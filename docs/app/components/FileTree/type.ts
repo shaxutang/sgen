@@ -8,7 +8,7 @@ export interface FileTreeProps
     >,
     "onClick"
   > {
-  explores: Explore[];
+  explores: Explore | Explore[];
   onClick?: (explore: Explore, e: React.MouseEvent) => void;
   onCreate?: (explore: Explore) => void;
 }
