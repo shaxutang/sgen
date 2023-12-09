@@ -2,11 +2,13 @@ export type Handler = Partial<{
   forceUpdate: () => void;
   onClick: (explore: Explore, e: React.MouseEvent) => void;
   onCreate: (explore: Explore) => void;
+  isSelected: (explore: Explore) => boolean;
 }>;
 
 export abstract class CommonEntity {
   protected name: string;
   protected path: string;
+  protected active: boolean = false;
   protected handler?: Handler;
   protected parent?: FolderEntity;
 
@@ -14,6 +16,15 @@ export abstract class CommonEntity {
     this.name = name;
     this.path = `${this.name}` === "/" ? "" : `/${this.name}`;
     this.handler = handler;
+  }
+
+  setActive(active: boolean) {
+    this.active = active;
+    this.notify();
+  }
+
+  getActive() {
+    return this.active;
   }
 
   setParent(parent: FolderEntity) {
@@ -32,7 +43,6 @@ export abstract class CommonEntity {
 
   setHandler(handler?: Handler) {
     this.handler = handler;
-    this.notify();
   }
 
   getHandler() {
@@ -58,9 +68,7 @@ export abstract class CommonEntity {
     this.notify();
   }
 
-  getType(): string {
-    return "";
-  }
+  abstract getType(): string;
 
   abstract onClick(e: React.MouseEvent): void;
 }

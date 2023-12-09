@@ -1,5 +1,7 @@
 "use client";
 import { useDark } from "@/app/hooks/useDark";
+import { faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { editor } from "monaco-editor";
 import dynamic from "next/dynamic";
@@ -42,13 +44,14 @@ export default function Editor({
   children,
   className,
   file,
+  onChange,
   ...rest
 }: EditorProps) {
   const { isDark } = useDark();
   const monaco = useRef<editor.IStandaloneCodeEditor>(null!);
 
   function handleChange(value: string | undefined) {
-    file?.setContent(value || "");
+    onChange?.(value || "");
   }
 
   function handleEditorDidMount(editor: editor.IStandaloneCodeEditor) {
@@ -61,13 +64,23 @@ export default function Editor({
 
   return (
     <div className={clsx(className)} {...rest}>
+      <div
+        className={clsx("main-h flex w-full items-center justify-center", {
+          hidden: file,
+        })}
+      >
+        <FontAwesomeIcon icon={faLayerGroup} className="mr-2" />{" "}
+        <span>empty...</span>
+      </div>
       <MonacoEditor
         theme={isDark ? "vs-dark" : "vs-light"}
         height="calc(100vh - 4rem - 1px)"
-        language={detectLanguage(file?.getName() || "javascript")}
-        defaultLanguage="javascript"
+        language={detectLanguage(file?.getName() || "")}
         onChange={handleChange}
         onMount={handleEditorDidMount}
+        className={clsx({
+          hidden: !file,
+        })}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { compileEjsTemplate } from "@/app/core/compile";
 import clsx from "clsx";
 import { useState } from "react";
 import Editor from "../Editor";
@@ -9,8 +10,9 @@ import Preview from "../Preview";
 import { PlaygroundProps } from "./type";
 
 export default function Playground({ className, ...rest }: PlaygroundProps) {
-  const [currenFile, setcurrentFile] = useState<FileEntity>(null!);
   const [state, setState] = useState(false);
+  const [currenFile, setcurrentFile] = useState<FileEntity>(null!);
+  const [preview, setPreview] = useState("");
 
   const [explores] = useState<Explore>(
     new FolderEntity(
@@ -24,35 +26,49 @@ export default function Playground({ className, ...rest }: PlaygroundProps) {
     ),
   );
 
+  async function renderPreview() {
+    const compile = compileEjsTemplate(currenFile?.getContent() || "");
+    const { frontmatter, content } = await fetch("/api/render", {
+      method: "POST",
+      body: JSON.stringify({
+        ...(compile ?? { frontmatter: {}, content: "" }),
+      }),
+    }).then((res) => res.json());
+    setPreview([frontmatter, content].join("\n"));
+  }
+
   function onClick(explore: Explore) {
+    explore.setActive(true);
     if (explore instanceof FileEntity) {
-      console.log("click...");
       setcurrentFile(explore);
-      console.log(explore);
+      renderPreview();
+      console.log("click...", explore);
     }
   }
 
   function onCreate(explore: Explore) {
     if (explore instanceof FileEntity) {
-      console.log("create...");
       setcurrentFile(explore);
-      console.log(explore);
+      renderPreview();
+      console.log("create...", explore);
     }
   }
 
+  function onChange(value: string) {
+    currenFile?.setContent(value);
+    renderPreview();
+  }
+
   return (
-    <section
-      className={clsx("grid h-[calc(100vh-4rem-1px)] grid-cols-12", className)}
-      {...rest}
-    >
+    <section className={clsx("main-h grid grid-cols-12", className)} {...rest}>
       <aside className="col-span-2">
         <FileTree explores={explores} onClick={onClick} onCreate={onCreate} />
       </aside>
       <div className="border-color-base col-span-5 border-l border-r">
-        <Editor file={currenFile} />
+        <Editor file={currenFile} onChange={onChange} />
       </div>
       <div className="col-span-5">
-        <Preview />
+        <Preview value={preview} />
       </div>
     </section>
   );

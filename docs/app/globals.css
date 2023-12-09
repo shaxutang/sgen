@@ -11,7 +11,11 @@
     @apply cursor-pointer px-2 hover:bg-gray-100 dark:hover:bg-gray-600;
   }
 
+  .explore--selected {
+    @apply bg-gray-100 dark:bg-gray-600;
+  }
+
   .main-h {
-    @apply h-[100vh-4rem-1px];
+    @apply h-[calc(100vh-4rem-1px)];
   }
 }
