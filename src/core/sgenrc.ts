@@ -6,6 +6,7 @@ import { Sgenrc, MergeSgenrc } from "@vcee/sgen-types";
 import dotenv from "dotenv";
 import { isExistsSync } from "../utils/fs";
 import { success } from "../utils/log";
+import { loopPath } from "../utils/path";
 import { Dir } from "./constans";
 import prompts from "./prompts";
 
@@ -14,7 +15,10 @@ export const fileName: string = ".sgenrc";
 // Path to the operating system sgenrc file
 export const osSgenrcPath: string = join(os.homedir(), fileName);
 // Path to the sgenrc file in the current directory
-export const cwdSgenrcPath: string = join(process.cwd(), Dir.SGEN, fileName);
+export const cwdSgenrcPath: string = loopPath(
+  process.cwd(),
+  join(Dir.SGEN, fileName),
+);
 
 /**
  * Asynchronously request necessary variables.

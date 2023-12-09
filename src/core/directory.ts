@@ -4,6 +4,7 @@ import dirTree from "directory-tree";
 import { Dir } from "../core/constans";
 import { getSgenrc } from "../core/sgenrc";
 import { isExistsSync } from "../utils/fs";
+import { loopPath } from "../utils/path";
 
 // Define a choice type with name and value properties
 export type Choice = {
@@ -20,7 +21,7 @@ export class Directory {
   // Constructor to initialize the dir property and load all directory choices
   constructor(dir: string) {
     this.dir = dir;
-    this.sgenDirPath = join(process.cwd(), Dir.SGEN, this.dir);
+    this.sgenDirPath = loopPath(process.cwd(), join(Dir.SGEN, this.dir));
     this.loadAllDirChoices();
   }
 
