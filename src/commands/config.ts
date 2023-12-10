@@ -1,6 +1,8 @@
 import { Sgenrc } from "@vcee/sgen-types";
+import chalk from "chalk";
 import {
   formatSgenrc,
+  getCwdSgenrc,
   getOsSgenrc,
   getOsSgenrcPath,
   promptsRequiredVariables,
@@ -25,7 +27,10 @@ function handleList(): void {
   success(
     [
       `${getOsSgenrcPath()} env variables below:\n`,
-      formatSgenrc(getOsSgenrc()),
+      chalk.blueBright(formatSgenrc(getOsSgenrc())),
+      `\n`,
+      "${cwd}\\.sgen\\.sgenrc env variables below:\n",
+      chalk.blueBright(formatSgenrc(getCwdSgenrc())),
     ].join("\n"),
   );
 }
