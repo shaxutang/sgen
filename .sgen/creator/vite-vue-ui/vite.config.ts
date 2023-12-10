@@ -1,8 +1,8 @@
+import vue from "@vitejs/plugin-vue";
 import fg from "fast-glob";
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import vue from "@vitejs/plugin-vue";
 
 // Regular expression for matching component paths
 const regex = /src\/components\/([^/]+)\/index\.ts/;
