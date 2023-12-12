@@ -1,4 +1,5 @@
 import * as changeCase from "change-case";
+import dayjs from "dayjs";
 import dotenv from "dotenv";
 import ejs from "ejs";
 import { getSgenrc } from "../core/sgenrc";
@@ -9,6 +10,7 @@ const sgenrc = getSgenrc();
 export const defaultVariables = {
   s: {
     changeCase,
+    dayjs,
   },
   sgenrc,
 };

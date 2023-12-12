@@ -17,6 +17,9 @@ importers:
       commander:
         specifier: ^11.1.0
         version: 11.1.0
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       directory-tree:
         specifier: ^3.5.1
         version: 3.5.1
@@ -1360,6 +1363,10 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.5
     dev: true
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
+    dev: false
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}

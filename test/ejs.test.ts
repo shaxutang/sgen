@@ -43,8 +43,7 @@ test("render template", () => {
     ---
     .button {
 
-    }
-    "
+    }"
   `);
 });
 
@@ -86,4 +85,17 @@ test("when the variable does not exist", () => {
   ).toMatchInlineSnapshot(
     '"tramsform result: <%= s.changeCase.camelCase(name) %>"',
   );
+});
+
+test("helper", () => {
+  const variables = {
+    name: "sgen",
+  };
+  expect(
+    render("tramsform result: <%= s.changeCase.camelCase(name) %>", variables),
+  ).toMatchInlineSnapshot('"tramsform result: sgen"');
+
+  expect(
+    render("tramsform result: <%= s.dayjs().format('YYYY-MM-DD') %>", {}),
+  ).toMatchInlineSnapshot('"tramsform result: 2023-12-12"');
 });
