@@ -117,7 +117,9 @@ $ sgen
 
 模板中会提供预置的变量
 
-- s：辅助函数，包括字符串驼峰转换 `s.changeCase.pascalCase(name)`，参考：[change-case](https://github.com/blakeembrey/change-case)
+- s：辅助函数
+  - changeCase：字符串驼峰转换 `s.changeCase.pascalCase(name)`，参考：[change-case](https://github.com/blakeembrey/change-case)
+  - dayjs：日期库转换`s.dayjs().format('YYYY-MM-DD')`，参考：[dayjs](https://day.js.org/)
 - sgenrc：配置内容
 
 ### [name].append.t：
