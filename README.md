@@ -117,7 +117,9 @@ The template follows the writing method of [ejs](https://ejs.co/). You can go to
 
 Preset variables are provided in the template
 
-- s: Auxiliary function, including string camel case conversion `s.changeCase.pascalCase(name)`, reference: [change-case](https://github.com/blakeembrey/change-case)
+- s: auxiliary function
+   - changeCase: string camel case conversion `s.changeCase.pascalCase(name)`, reference: [change-case](https://github.com/blakeembrey/change-case)
+   - dayjs: date library conversion `s.dayjs().format('YYYY-MM-DD')`, reference: [dayjs](https://day.js.org/)
 - sgenrc: configuration content
 
 ### [name].append.t：
