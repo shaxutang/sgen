@@ -1,5 +1,6 @@
 import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import dirTree from "directory-tree";
 import { Dir } from "../core/constans";
 import { getSgenrc } from "../core/sgenrc";
@@ -43,6 +44,7 @@ export class Directory {
   loadAllDirChoices(): {
     sgenDirChoices: Choice[];
     workspaceDirChoices: Choice[];
+    presetDirChoices: Choice[];
   } {
     // Get the sgenDirPath, workspacePath, and presetPath from the getDirPath() instance method
     const { sgenDirPath, workspacePath } = this.getDirPath();
@@ -51,11 +53,15 @@ export class Directory {
     const sgenDirChoices: Choice[] = this.getDirectoryChoices(sgenDirPath);
     const workspaceDirChoices: Choice[] =
       this.getDirectoryChoices(workspacePath);
+    const presetDirChoices: Choice[] = this.getDirectoryChoices(
+      join(fileURLToPath(import.meta.url), "../../", "presets", Dir.CREATOR),
+    );
 
     // Return an object with sgenDirChoices, workspaceDirChoices, and presetDirChoices
     return {
       sgenDirChoices,
       workspaceDirChoices,
+      presetDirChoices,
     };
   }
 
@@ -90,7 +96,8 @@ export class Directory {
   // Get all directory choices with separators
   getAllDirChoices(): Array<any> {
     // Get sgenDirChoices, workspaceDirChoices, and presetDirChoices from loadAllDirChoices() instance method
-    const { sgenDirChoices, workspaceDirChoices } = this.loadAllDirChoices();
+    const { sgenDirChoices, workspaceDirChoices, presetDirChoices } =
+      this.loadAllDirChoices();
 
     // Define a function to add separators to the choices array
     const getNotEmptyChoices = (seperator: string, choices: Choice[] = []) => {
@@ -108,6 +115,7 @@ export class Directory {
     return [
       ...getNotEmptyChoices("✨ .sgen", sgenDirChoices),
       ...getNotEmptyChoices("✨ workspace", workspaceDirChoices),
+      ...getNotEmptyChoices("✨ preset", presetDirChoices),
     ];
   }
 

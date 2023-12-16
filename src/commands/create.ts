@@ -125,10 +125,7 @@ function createRegexForExcludedPaths(paths: string[]) {
   const escapedPaths = paths.map((path) =>
     path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
   );
-
   const regexString = `^(?!${escapedPaths.join("|")}).*`;
-
   const regex = new RegExp(regexString, "i");
-
   return regex;
 }
