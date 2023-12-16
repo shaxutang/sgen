@@ -88,9 +88,10 @@ export class Directory {
   // Get all directories
   getAllDirs(): Array<any> {
     // Get sgenDirChoices, workspaceDirChoices, and presetDirChoices from loadAllDirChoices() instance method
-    const { sgenDirChoices, workspaceDirChoices } = this.loadAllDirChoices();
+    const { sgenDirChoices, workspaceDirChoices, presetDirChoices } =
+      this.loadAllDirChoices();
     // Return an array with sgenDirChoices, workspaceDirChoices, and presetDirChoices
-    return [...sgenDirChoices, ...workspaceDirChoices];
+    return [...sgenDirChoices, ...workspaceDirChoices, presetDirChoices];
   }
 
   // Get all directory choices with separators
