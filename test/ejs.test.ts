@@ -8,7 +8,7 @@ const variables = {
 
 const content = readFileSync("test/fixtures/ejs.t", "utf-8").toString();
 
-const spiltContent = content.split("<!-- sgen seperator -->");
+const spiltContent = content.split("<!-- truncate -->");
 
 const template = compileEjsTemplate(content);
 
@@ -36,7 +36,7 @@ test("render template", () => {
       );
     }
 
-    <!-- sgen seperator -->
+    <!-- truncate -->
 
     ---
     to: src/components/button/styles.css
@@ -97,5 +97,5 @@ test("helper", () => {
 
   expect(
     render("tramsform result: <%= s.dayjs().format('YYYY-MM-DD') %>", {}),
-  ).toMatchInlineSnapshot('"tramsform result: 2023-12-12"');
+  ).toMatchInlineSnapshot('"tramsform result: 2023-12-16"');
 });

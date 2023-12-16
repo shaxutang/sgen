@@ -12,7 +12,7 @@ export default function <%= s.changeCase.pascalCase(name) %>({ children, classNa
   );
 }
 
-<!-- sgen seperator -->
+<!-- truncate -->
 
 ---
 to: src/components/<%= name %>/styles.css
