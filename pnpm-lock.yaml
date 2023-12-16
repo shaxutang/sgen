@@ -75,9 +75,6 @@ importers:
       '@types/validator':
         specifier: ^13.11.7
         version: 13.11.7
-      '@vcee/sgen-types':
-        specifier: workspace:^
-        version: link:packages/types
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
@@ -99,8 +96,6 @@ importers:
       vitest:
         specifier: ^0.34.6
         version: 0.34.6
-
-  packages/types: {}
 
 packages:
 

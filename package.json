@@ -59,7 +59,6 @@
     "@types/shelljs": "^0.8.15",
     "@types/through2": "^2.0.41",
     "@types/validator": "^13.11.7",
-    "@vcee/sgen-types": "workspace:^",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "prettier": "^3.1.0",
