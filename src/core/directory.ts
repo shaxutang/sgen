@@ -54,7 +54,7 @@ export class Directory {
     const workspaceDirChoices: Choice[] =
       this.getDirectoryChoices(workspacePath);
     const presetDirChoices: Choice[] = this.getDirectoryChoices(
-      join(fileURLToPath(import.meta.url), "../../", "presets", Dir.CREATOR),
+      join(fileURLToPath(import.meta.url), "../../", "presets", this.dir),
     );
 
     // Return an object with sgenDirChoices, workspaceDirChoices, and presetDirChoices
