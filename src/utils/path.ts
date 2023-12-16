@@ -1,4 +1,3 @@
-import os from "node:os";
 import { join } from "path";
 import { isExistsSync } from "./fs";
 

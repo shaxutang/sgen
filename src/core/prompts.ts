@@ -29,10 +29,11 @@ export async function getPromptsVariables(
       "name"
     >,
   ).map(
-    ([field, value]) =>
+    ([field, { type, ...rest }]) =>
       ({
         name: field,
-        ...value,
+        type: type ?? "text",
+        ...rest,
       }) as prompts.PromptObject,
   );
 
