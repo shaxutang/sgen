@@ -1,7 +1,7 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { statSync } from "node:fs";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import dotenv from "dotenv";
 import copy from "recursive-copy";
 import { Dir } from "../core/constans";
 import { isExists } from "../utils/fs";
@@ -17,13 +17,6 @@ export default async function () {
 
   await mkdir(join(Dir.SGEN, Dir.GENERATOR), { recursive: true });
 
-  const projectsDir = join(
-    fileURLToPath(import.meta.url),
-    "../../",
-    "presets",
-    Dir.CREATOR,
-  );
-
   const templatesDir = join(
     fileURLToPath(import.meta.url),
     "../../",
@@ -31,13 +24,17 @@ export default async function () {
     Dir.GENERATOR,
   );
 
-  await copy(projectsDir, join(Dir.SGEN, Dir.CREATOR), {
-    dot: true,
-  });
+  const dirs = (await readdir(templatesDir)).filter((item) =>
+    statSync(join(templatesDir, item)).isDirectory(),
+  );
 
-  await copy(templatesDir, join(Dir.SGEN, Dir.GENERATOR), {
-    dot: true,
-  });
+  await copy(
+    join(templatesDir, dirs[0]),
+    join(Dir.SGEN, Dir.GENERATOR, "example"),
+    {
+      dot: true,
+    },
+  );
 
   await writeFile(
     join(Dir.SGEN, ".sgenrc"),
