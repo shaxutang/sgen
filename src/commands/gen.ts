@@ -90,7 +90,7 @@ async function handleAppend({
     const endPoint = match.index! + pattern.length;
     const before = raw.substring(0, endPoint);
     const after = raw.substring(endPoint);
-    await writeFile(to, [before, `${content}`, after].join(""), "utf-8");
+    await writeFile(to, [before, `\n${content}`, after].join(""), "utf-8");
   } else {
     // If the pattern does not exist, display a warning message.
     warn(`Please add the following code to the "${to}":\n\n${pattern}`);

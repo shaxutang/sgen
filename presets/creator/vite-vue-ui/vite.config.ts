@@ -44,7 +44,7 @@ export default defineConfig({
         // Component entries
         ...componentEntries,
         // Style merge entry
-        merge: "src/index.css",
+        extra: "src/index.css",
       },
       // Library name
       name: "<%= s.changeCase.camelCase(name) %>",
@@ -72,8 +72,8 @@ export default defineConfig({
         assetFileNames: ({ name }) => {
           if (name?.endsWith(".css")) {
             const cssName = name?.replace(".css", "");
-            if (cssName === "merge") {
-              // Merged style file name
+            if (cssName === "extra") {
+              // Merge all css
               return "index.css";
             }
             if (isComponentEntry(cssName))
@@ -81,6 +81,14 @@ export default defineConfig({
               return `components/${cssName}/index.css`;
           }
           return name!;
+        },
+        // Import css in packaged file
+        intro: ({ facadeModuleId }) => {
+          const isComponentEntry = facadeModuleId?.match(regex)?.[1];
+          if (isComponentEntry) {
+            return `import "./index.css";`;
+          }
+          return "";
         },
         // JS file naming rule
         chunkFileNames: "chunks/[name].[format].js",
