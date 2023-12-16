@@ -40,7 +40,7 @@ export default async function () {
     join(Dir.SGEN, ".sgenrc"),
     [
       "# These two properties will be used when you create the default project",
-      '# you can exec\n# - "sgen config set username=<your github username>"\n# - "sgen config set email=<your email>"\n# save to ~/user/.sgenrc, then you can use them globally',
+      '# you can exec\n# "sgen config init"\n# or\n# - "sgen config set username=<your github username>"\n# - "sgen config set email=<your email>"\n# save to ~/user/.sgenrc, then you can use them globally',
       "username: <your github username>",
       "email: <your email>",
     ].join("\n"),

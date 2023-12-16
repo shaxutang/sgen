@@ -1,5 +1,7 @@
 # These two properties will be used when you create the default project
 # you can exec
+# "sgen config init"
+# or
 # - "sgen config set username=<your github username>"
 # - "sgen config set email=<your email>"
 # save to ~/user/.sgenrc, then you can use them globally
