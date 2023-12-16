@@ -118,8 +118,8 @@ The template follows the writing method of [ejs](https://ejs.co/). You can go to
 Preset variables are provided in the template
 
 - s: auxiliary function
-   - changeCase: string camel case conversion `s.changeCase.pascalCase(name)`, reference: [change-case](https://github.com/blakeembrey/change-case)
-   - dayjs: date library conversion `s.dayjs().format('YYYY-MM-DD')`, reference: [dayjs](https://day.js.org/)
+  - changeCase: string camel case conversion `s.changeCase.pascalCase(name)`, reference: [change-case](https://github.com/blakeembrey/change-case)
+  - dayjs: date library conversion `s.dayjs().format('YYYY-MM-DD')`, reference: [dayjs](https://day.js.org/)
 - sgenrc: configuration content
 
 ### [name].append.t：
@@ -168,7 +168,7 @@ export default function <%= s.changeCase.pascalCase(name) %>({ children, classNa
 
 ### Support writing multiple templates in the same file
 
-Just add the separator `<!-- sgen seperator -->` in the template file.
+Just add the separator `<!-- truncate -->` in the template file.
 
 ```txt
 ---
@@ -186,7 +186,7 @@ export default function <%= s.changeCase.pascalCase(name) %>({ children, classNa
 }
 
 
-<!-- sgen seperator -->
+<!-- truncate -->
 
 ---
 to: background/components/<%= name %>/<%= name %>.tsx

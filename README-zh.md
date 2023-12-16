@@ -168,7 +168,7 @@ export default function <%= s.changeCase.pascalCase(name) %>({ children, classNa
 
 ### 支持统一个文件编写多个模板
 
-只需要在模板文件中添加分隔符`<!-- sgen seperator -->`即可。
+只需要在模板文件中添加分隔符`<!-- truncate -->`即可。
 
 ```txt
 ---
@@ -186,7 +186,7 @@ export default function <%= s.changeCase.pascalCase(name) %>({ children, classNa
 }
 
 
-<!-- sgen seperator -->
+<!-- truncate -->
 
 ---
 to: background/components/<%= name %>/<%= name %>.tsx
