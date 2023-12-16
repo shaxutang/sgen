@@ -1,7 +1,7 @@
 {
   "name": "@vcee/sgen",
   "type": "module",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "A simple cli tool to generate a project",
   "bin": {
     "sgen": "index.js"
