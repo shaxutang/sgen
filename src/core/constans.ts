@@ -4,4 +4,4 @@ export enum Dir {
   GENERATOR = "generator",
 }
 
-export const GENERATOR_SEPERATOR = "<!-- sgen seperator -->";
+export const GENERATOR_SEPERATOR = "<!-- truncate -->";
