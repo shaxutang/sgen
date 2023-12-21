@@ -176,7 +176,7 @@ export default async function () {
     .reduce((p1, p2) => [...p1, ...p2], [])
     // filter out invalid file
     .filter((processFile) => {
-      if (!!processFile.frontmatter && !!processFile.content) {
+      if (!!processFile.frontmatter) {
         return true;
       }
       warn(`The file "${processFile.templateFileName}" content is not valid.`);
