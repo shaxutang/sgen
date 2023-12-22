@@ -1,4 +1,3 @@
-import { Sgenrc } from "@vcee/sgen-types";
 import chalk from "chalk";
 import {
   formatSgenrc,
@@ -9,6 +8,7 @@ import {
   removeFieldFromOsSgenrc,
   setFieldToOsSgenrc,
 } from "../core/sgenrc";
+import { Sgenrc } from "../type";
 import { success, warn } from "../utils/log";
 
 /**

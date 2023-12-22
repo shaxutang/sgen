@@ -173,7 +173,7 @@ export default async function () {
 
       return processFiles;
     })
-    .reduce((p1, p2) => [...p1, ...p2], [])
+    .flatMap((file) => file)
     // filter out invalid file
     .filter((processFile) => {
       if (!!processFile.frontmatter) {
